@@ -1,98 +1,296 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CARBU | Grúa & Asistencia</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body { font-family: Arial, sans-serif; }
-    .hero { background: url('https://www.carbucr.com/path-to-your-image.jpg') center/cover no-repeat; height: 70vh; color: white; display: flex; align-items: center; justify-content: center; text-align: center; }
-    .hero h1 { font-size: 3rem; font-weight: bold; }
-    .contact-btn { font-size: 1.2rem; }
-    footer { background: #222; color: #fff; padding: 20px 0; }
-    .services i { font-size: 2rem; color: #0d6efd; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARBU | Towing Truck Co. - Tu aliado en el camino</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --color-negro: #000000;
+            --color-rojo: #e31e24;
+            --color-rojo-hover: #b5171c;
+            --color-whatsapp: #25d366;
+            --color-facebook: #1877f2;
+            --color-gris-texto: #666666;
+            --fuente-titulos: 'Archivo Black', sans-serif;
+            --fuente-texto: 'Roboto', sans-serif;
+        }
+
+        body {
+            font-family: var(--fuente-texto);
+            color: var(--color-negro);
+            background-color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Header & Lang --- */
+        .lang-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+
+        .lang-btn.active {
+            background-color: var(--color-negro);
+            color: white;
+            border-color: var(--color-negro);
+        }
+
+        .navbar-brand img { height: 80px; width: auto; }
+
+        /* --- Hero --- */
+        .hero-container { padding: 30px 0 60px; }
+
+        .hero-title {
+            font-family: var(--fuente-titulos);
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .btn-carbu {
+            background-color: var(--color-rojo);
+            color: #ffffff !important;
+            border-radius: 50px;
+            padding: 1.2rem 2.5rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 240px;
+            text-decoration: none;
+            animation: pulse-border-red 2s infinite;
+        }
+
+        @keyframes pulse-border-red {
+            0% { box-shadow: 0 0 0 0 rgba(227, 30, 36, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(227, 30, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(227, 30, 36, 0); }
+        }
+
+        .btn-carbu:hover {
+            background-color: var(--color-rojo-hover);
+            transform: translateY(-3px);
+            animation: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .image-wrapper { border-radius: 8px; overflow: hidden; background-color: #f8f9fa; }
+        .hero-img { width: 100%; height: auto; object-fit: contain; }
+
+        /* --- Coverage --- */
+        .coverage-section {
+            background-color: #fcfcfc;
+            padding: 80px 0;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 450px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .coverage-badge {
+            display: inline-block;
+            background-color: var(--color-rojo);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        /* --- Footer --- */
+        footer { border-top: 1px solid #e0e0e0; padding: 40px 0; background-color: #fff; }
+        .footer-heading { font-family: var(--fuente-titulos); font-size: 0.9rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .footer-text { color: var(--color-gris-texto); font-size: 0.85rem; margin-bottom: 0; }
+        
+        .social-link { color: var(--color-negro); font-size: 1.5rem; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
+        .social-link.fb:hover { color: var(--color-facebook); transform: translateY(-3px); }
+        .social-link.wa:hover { color: var(--color-whatsapp); transform: translateY(-3px); }
+
+        /* --- Global Mobile Fixes --- */
+        @media (max-width: 991.98px) {
+            .hero-title-center { text-align: center; } /* Solo centramos el título principal en el Hero */
+            .btn-group-custom { justify-content: center; margin-bottom: 3rem; }
+            .navbar-brand, .footer-trust-badge { margin: 0 auto; }
+            .map-container { height: 350px; }
+            .footer-col { margin-bottom: 2rem; }
+            .footer-brand-container { flex-direction: column !important; gap: 1.5rem !important; }
+            .footer-row { text-align: center; }
+            .text-start-mobile { text-align: left !important; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Encabezado -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">CARBU</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contacto</a></li>
-        </ul>
-      </div>
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-es" onclick="setLanguage('es')">ES</button>
+        <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
     </div>
-  </nav>
 
-  <!-- Hero / Imagen principal -->
-  <section class="hero">
-    <div>
-      <h1>CARBU | Grúa & Asistencia</h1>
-      <p>Asistencia rápida en Nicoya, Guanacaste y alrededores</p>
-      <a href="https://wa.me/50688692602" class="btn btn-success contact-btn mt-3">Contactar por WhatsApp</a>
-    </div>
-  </section>
-
-  <!-- Servicios -->
-  <section id="services" class="py-5 text-center">
-    <div class="container">
-      <h2 class="mb-4">Nuestros Servicios</h2>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card h-100 p-3 text-center services">
-            <i class="bi bi-truck"></i>
-            <h5 class="mt-3">Remolque de vehículos</h5>
-            <p>Traslado seguro de autos, camionetas y motos.</p>
-          </div>
+    <nav class="navbar navbar-light bg-white py-4">
+        <div class="container d-flex justify-content-center">
+            <a class="navbar-brand" href="#">
+                <img src="https://github.com/menezr/Carbu/blob/main/images/logoweb.png?raw=true" alt="Carbu Towing Truck Co.">
+            </a>
         </div>
-        <div class="col-md-4">
-          <div class="card h-100 p-3 text-center services">
-            <i class="bi bi-tools"></i>
-            <h5 class="mt-3">Asistencia mecánica</h5>
-            <p>Soporte rápido en carretera para fallas menores.</p>
-          </div>
+    </nav>
+
+    <main class="hero-container container-fluid px-lg-5">
+        <div class="row g-0 align-items-center">
+            <div class="col-lg-5 px-4 px-lg-5 order-2 order-lg-1">
+                <h1 class="hero-title hero-title-center" data-key="heroTitle">Tu aliado<br>en el camino</h1>
+                <div class="btn-group-custom d-flex flex-wrap gap-3">
+                    <a href="tel:50686306858" class="btn-carbu" data-key="btnCall">Llamar Ya</a>
+                    <a href="https://wa.me/50688692602" class="btn-carbu" data-key="btnChat">Mensaje WhatsApp</a>
+                </div>
+            </div>
+            <div class="col-lg-7 order-1 order-lg-2">
+                <div class="image-wrapper shadow-sm">
+                    <img src="https://lh3.googleusercontent.com/p/AF1QipN5FTAn-hkdtzMWGtu40K47mSbUeXXUhyGr-ZOJ=s1360-w1360-h1020-rw" alt="Grúa Carbu Portada" class="hero-img">
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-          <div class="card h-100 p-3 text-center services">
-            <i class="bi bi-lightning-charge"></i>
-            <h5 class="mt-3">Arranque de batería</h5>
-            <p>Servicio inmediato para que tu vehículo vuelva a rodar.</p>
-          </div>
+    </main>
+
+    <section class="coverage-section">
+        <div class="container-fluid px-lg-5">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-5 mb-lg-0 px-lg-5 text-start-mobile">
+                    <span class="coverage-badge" data-key="covBadge">ZONA DE COBERTURA</span>
+                    <h2 class="hero-title text-start-mobile" style="font-size: 2rem; margin-bottom: 1rem;" data-key="covTitle">¿Dónde llegamos?</h2>
+                    <p class="text-muted mb-4 text-start-mobile" data-key="covText">
+                        Brindamos asistencia rápida en un radio de <strong>55 km</strong> desde nuestra base en Nicoya. Esto incluye gran parte de la Península de Nicoya y alrededores en Guanacaste.
+                    </p>
+                    <ul class="list-unstyled text-start-mobile">
+                        <li class="mb-2"><strong>✓</strong> <span data-key="feat1">Servicio 24/7</span></li>
+                        <li class="mb-2"><strong>✓</strong> <span data-key="feat2">Asistencia rápida</span></li>
+                        <li class="mb-2"><strong>✓</strong> <span data-key="feat3">Personal calificado</span></li>
+                    </ul>
+                </div>
+                <div class="col-lg-7">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125740.2312217625!2d-85.52445851608639!3d10.142581699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f9fb093952f9011%3A0xe964344079813958!2sNicoya%2C%20Provincia%20de%20Guanacaste%2C%20Nicoya!5e0!3m2!1ses!2scr!4v1700000000000!5m2!1ses!2scr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Ubicación y contacto -->
-  <section id="contact" class="py-5 bg-light text-center">
-    <div class="container">
-      <h2 class="mb-4">Contacto y Ubicación</h2>
-      <p><strong>Teléfono:</strong> <a href="tel:+50688692602">(506) 8869-2602</a></p>
-      <p><strong>Email:</strong> <a href="mailto:admin@carbucr.com">admin@carbucr.com</a></p>
-      <p><strong>Ubicación:</strong> Nicoya, Guanacaste, Costa Rica</p>
-      <a href="https://wa.me/50688692602" class="btn btn-success mt-3">Enviar WhatsApp</a>
-      <div class="mt-4">
-        <iframe src="https://www.google.com/maps?q=Nicoya,+Guanacaste&output=embed" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-      </div>
-    </div>
-  </section>
+    <footer>
+        <div class="container-fluid px-lg-5">
+            <div class="row align-items-center footer-row">
+                <div class="col-lg-3 footer-col d-flex align-items-center gap-4 footer-brand-container">
+                    <img src="https://github.com/menezr/Carbu/blob/main/images/badge.png?raw=true" alt="Calidad" style="max-width: 80px;">
+                    <div class="text-start-mobile">
+                        <h5 class="footer-heading" data-key="socialTitle">Síguenos</h5>
+                        <div class="d-flex gap-3 mt-2 justify-content-center justify-content-lg-start">
+                            <a href="https://www.facebook.com/gruacarbura/" target="_blank" class="social-link fb"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://wa.me/50688692602" target="_blank" class="social-link wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 footer-col text-lg-start">
+                    <h5 class="footer-heading" data-key="locTitle">Ubicación</h5>
+                    <p class="footer-text">Barrio Guadalupe, Nicoya, Guanacaste, CR.</p>
+                </div>
+                <div class="col-lg-2 footer-col text-lg-start">
+                    <h5 class="footer-heading">WhatsApp</h5>
+                    <p class="footer-text">(506) 8869-2602</p>
+                </div>
+                <div class="col-lg-2 footer-col text-lg-start">
+                    <h5 class="footer-heading" data-key="officeLabel">Llamadas</h5>
+                    <p class="footer-text">(506) 8630-6858</p>
+                </div>
+                <div class="col-lg-2 footer-col text-lg-start">
+                    <h5 class="footer-heading">Email</h5>
+                    <p class="footer-text">admin@carbucr.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-  <!-- Footer -->
-  <footer class="text-center">
-    <div class="container">
-      <p>© 2026 CARBU | Grúa & Asistencia. Todos los derechos reservados.</p>
-    </div>
-  </footer>
+    <script>
+        const translations = {
+            es: {
+                heroTitle: "Tu aliado<br>en el camino",
+                btnCall: "Llamar Ya",
+                btnChat: "Mensaje WhatsApp",
+                covBadge: "ZONA DE COBERTURA",
+                covTitle: "¿Dónde llegamos?",
+                covText: "Brindamos asistencia rápida en un radio de <strong>55 km</strong> desde nuestra base en Nicoya. Esto incluye gran parte de la Península de Nicoya y alrededores en Guanacaste.",
+                feat1: "Servicio 24/7",
+                feat2: "Asistencia rápida",
+                feat3: "Personal calificado",
+                socialTitle: "Síguenos",
+                locTitle: "Ubicación",
+                officeLabel: "Llamadas"
+            },
+            en: {
+                heroTitle: "Your partner<br>on the road",
+                btnCall: "Call Now",
+                btnChat: "WhatsApp Message",
+                covBadge: "COVERAGE AREA",
+                covTitle: "Where do we go?",
+                covText: "We provide fast assistance within a <strong>55 km</strong> radius from our base in Nicoya. This covers most of the Nicoya Peninsula and surroundings in Guanacaste.",
+                feat1: "24/7 Service",
+                feat2: "Fast Assistance",
+                feat3: "Qualified Staff",
+                socialTitle: "Follow Us",
+                locTitle: "Location",
+                officeLabel: "Calls"
+            }
+        };
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
+        function setLanguage(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) el.innerHTML = translations[lang][key];
+            });
+            
+            document.documentElement.lang = lang;
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
