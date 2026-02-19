@@ -7,12 +7,52 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-JBZ0KL11PH');
     </script>
+
+    <!-- Schema.org - SEO Local -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoTowing",
+      "name": "Grúas Carbu",
+      "image": "https://www.carbucr.com/images/logoweb.png",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Barrio Guadalupe",
+        "addressLocality": "Nicoya",
+        "addressRegion": "Guanacaste",
+        "addressCountry": "CR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 10.1481,
+        "longitude": -85.4520
+      },
+      "url": "https://www.carbucr.com",
+      "telephone": "+50686306858",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "00:00",
+          "closes": "23:59"
+        }
+      ],
+      "areaServed": ["Nicoya", "Guanacaste", "Liberia", "Santa Cruz", "Península de Nicoya"]
+    }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CARBU | Towing Truck Co. - Tu aliado en el camino</title>
+    <meta name="description" content="Servicio de grúas profesional en Guanacaste 24/7. Asistencia rápida en Nicoya, Liberia, Santa Cruz y alrededores. Remolque confiable y seguro.">
+    <meta name="keywords" content="grúas guanacaste, servicio de grúas nicoya, grúas liberia, asistencia en carretera guanacaste, remolque de vehículos costa rica">
+
+    <meta property="og:title" content="Grúas en Guanacaste | Carbu - Servicio 24/7">
+    <meta property="og:description" content="¿Varado en Guanacaste? Carbu te ofrece asistencia de grúa rápida y profesional las 24 horas.">
+    <meta property="og:url" content="https://www.carbucr.com">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://www.carbucr.com/">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -155,9 +195,9 @@
 
         /* --- Global Mobile Fixes --- */
         @media (max-width: 991.98px) {
-            .hero-title-center { text-align: center; } /* Solo centramos el título principal en el Hero */
+            .hero-title-center { text-align: center; }
             .btn-group-custom { justify-content: center; margin-bottom: 3rem; }
-            .navbar-brand, .footer-trust-badge { margin: 0 auto; }
+            .navbar-brand { margin: 0 auto; }
             .map-container { height: 350px; }
             .footer-col { margin-bottom: 2rem; }
             .footer-brand-container { flex-direction: column !important; gap: 1.5rem !important; }
@@ -175,8 +215,8 @@
 
     <nav class="navbar navbar-light bg-white py-4">
         <div class="container d-flex justify-content-center">
-            <a class="navbar-brand" href="#">
-                <img src="https://github.com/menezr/Carbu/blob/main/images/logoweb.png?raw=true" alt="Carbu Towing Truck Co.">
+            <a class="navbar-brand" href="/">
+                <img src="images/logoweb.png" alt="Carbu Towing Truck Co.">
             </a>
         </div>
     </nav>
@@ -192,7 +232,8 @@
             </div>
             <div class="col-lg-7 order-1 order-lg-2">
                 <div class="image-wrapper shadow-sm">
-                    <img src="https://lh3.googleusercontent.com/p/AF1QipN5FTAn-hkdtzMWGtu40K47mSbUeXXUhyGr-ZOJ=s1360-w1360-h1020-rw" alt="Grúa Carbu Portada" class="hero-img">
+                    <!-- Ruta de imagen local para mejor SEO e indexación -->
+                    <img src="images/portada.jpg" alt="Grúa Carbu Portada" class="hero-img">
                 </div>
             </div>
         </div>
@@ -205,7 +246,7 @@
                     <span class="coverage-badge" data-key="covBadge">ZONA DE COBERTURA</span>
                     <h2 class="hero-title text-start-mobile" style="font-size: 2rem; margin-bottom: 1rem;" data-key="covTitle">¿Dónde llegamos?</h2>
                     <p class="text-muted mb-4 text-start-mobile" data-key="covText">
-                        Brindamos asistencia rápida en un radio de <strong>55 km</strong> desde nuestra base en Nicoya. Esto incluye gran parte de la Península de Nicoya y alrededores en Guanacaste.
+                        Brindamos asistencia rápida en un radio de <strong>55 km</strong> desde nuestra base en Nicoya. Esto incluye <strong>Liberia, Santa Cruz, Nosara, Sámara, Hojancha</strong> y gran parte de la Península de Nicoya en Guanacaste.
                     </p>
                     <ul class="list-unstyled text-start-mobile">
                         <li class="mb-2"><strong>✓</strong> <span data-key="feat1">Servicio 24/7</span></li>
@@ -226,7 +267,7 @@
         <div class="container-fluid px-lg-5">
             <div class="row align-items-center footer-row">
                 <div class="col-lg-3 footer-col d-flex align-items-center gap-4 footer-brand-container">
-                    <img src="https://github.com/menezr/Carbu/blob/main/images/badge.png?raw=true" alt="Calidad" style="max-width: 80px;">
+                    <img src="images/badge.png" alt="Calidad" style="max-width: 80px;">
                     <div class="text-start-mobile">
                         <h5 class="footer-heading" data-key="socialTitle">Síguenos</h5>
                         <div class="d-flex gap-3 mt-2 justify-content-center justify-content-lg-start">
@@ -263,7 +304,7 @@
                 btnChat: "Mensaje WhatsApp",
                 covBadge: "ZONA DE COBERTURA",
                 covTitle: "¿Dónde llegamos?",
-                covText: "Brindamos asistencia rápida en un radio de <strong>55 km</strong> desde nuestra base en Nicoya. Esto incluye gran parte de la Península de Nicoya y alrededores en Guanacaste.",
+                covText: "Brindamos asistencia rápida en un radio de <strong>55 km</strong> desde nuestra base en Nicoya. Esto incluye <strong>Liberia, Santa Cruz, Nosara, Sámara, Hojancha</strong> y gran parte de la Península de Nicoya en Guanacaste.",
                 feat1: "Servicio 24/7",
                 feat2: "Asistencia rápida",
                 feat3: "Personal calificado",
@@ -277,7 +318,7 @@
                 btnChat: "WhatsApp Message",
                 covBadge: "COVERAGE AREA",
                 covTitle: "Where do we go?",
-                covText: "We provide fast assistance within a <strong>55 km</strong> radius from our base in Nicoya. This covers most of the Nicoya Peninsula and surroundings in Guanacaste.",
+                covText: "We provide fast assistance within a <strong>55 km</strong> radius from our base in Nicoya. This includes <strong>Liberia, Santa Cruz, Nosara, Sámara, Hojancha</strong>, and most of the Nicoya Peninsula in Guanacaste.",
                 feat1: "24/7 Service",
                 feat2: "Fast Assistance",
                 feat3: "Qualified Staff",
@@ -299,7 +340,9 @@
             document.documentElement.lang = lang;
         }
     </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
