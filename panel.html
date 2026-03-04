@@ -3,49 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carbucr Panel</title>
+<title>Panel</title>
 
 <style>
 :root{
-  --bg-light: #f5f7fa;
-  --bg-dark: #0f172a;
-  --card-light: rgba(255,255,255,0.6);
-  --card-dark: rgba(15,23,42,0.6);
-  --text-light: #1e293b;
-  --text-dark: #f1f5f9;
-  --border-light: rgba(255,255,255,0.4);
-  --border-dark: rgba(255,255,255,0.1);
-  --accent: #dc2626; /* rojo */
+  --bg-light:#f5f7fa;
+  --bg-dark:#0f172a;
+  --card-light:rgba(255,255,255,0.6);
+  --card-dark:rgba(15,23,42,0.6);
+  --text-light:#1e293b;
+  --text-dark:#f1f5f9;
+  --border-light:rgba(255,255,255,0.4);
+  --border-dark:rgba(255,255,255,0.1);
+  --accent:#dc2626;
 }
 
 body{
   margin:0;
-  font-family:'Segoe UI', sans-serif;
+  font-family:'Segoe UI',sans-serif;
   height:100vh;
-  display:flex;
+  display:none;
   justify-content:center;
   align-items:center;
   transition:0.4s;
 }
 
-body.light{
-  background:var(--bg-light);
-  color:var(--text-light);
-}
-
-body.dark{
-  background:var(--bg-dark);
-  color:var(--text-dark);
-}
+body.light{background:var(--bg-light);color:var(--text-light);}
+body.dark{background:var(--bg-dark);color:var(--text-dark);}
 
 .panel-box{
   width:360px;
   padding:40px;
   border-radius:20px;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  transition:0.4s;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  backdrop-filter:blur(15px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
   position:relative;
 }
 
@@ -53,16 +44,12 @@ body.light .panel-box{
   background:var(--card-light);
   border:1px solid var(--border-light);
 }
-
 body.dark .panel-box{
   background:var(--card-dark);
   border:1px solid var(--border-dark);
 }
 
-h2{
-  text-align:center;
-  margin-bottom:30px;
-}
+h2{text-align:center;margin-bottom:20px;}
 
 button{
   width:100%;
@@ -74,58 +61,39 @@ button{
   color:white;
   font-weight:bold;
   cursor:pointer;
-  transition:0.3s;
 }
 
-button:hover{
-  opacity:0.9;
-}
-
-/* Switch */
 .switch{
   position:absolute;
   top:20px;
   right:20px;
 }
-
-.switch input{
-  display:none;
-}
+.switch input{display:none;}
 
 .slider{
-  width:50px;
-  height:25px;
+  width:50px;height:25px;
   background:#ccc;
   border-radius:50px;
   position:relative;
   cursor:pointer;
   transition:0.3s;
 }
-
 .slider:before{
   content:"";
   position:absolute;
-  width:20px;
-  height:20px;
+  width:20px;height:20px;
   border-radius:50%;
-  top:2.5px;
-  left:3px;
+  top:2.5px;left:3px;
   background:white;
   transition:0.3s;
 }
-
-input:checked + .slider{
-  background:#222;
-}
-
-input:checked + .slider:before{
-  transform:translateX(24px);
-}
+input:checked + .slider{background:#222;}
+input:checked + .slider:before{transform:translateX(24px);}
 
 .status-display{
   text-align:center;
-  font-weight:bold;
   margin-bottom:20px;
+  font-weight:bold;
 }
 </style>
 </head>
@@ -134,95 +102,85 @@ input:checked + .slider:before{
 
 <div class="panel-box">
 
-  <label class="switch">
-    <input type="checkbox" onclick="toggleMode()">
-    <div class="slider"></div>
-  </label>
+<label class="switch">
+<input type="checkbox" onclick="toggleMode()">
+<div class="slider"></div>
+</label>
 
-  <h2>Panel de Estado</h2>
+<h2>Panel de Estado</h2>
 
-  <div class="status-display" id="currentStatus">
-    Estado actual: —
-  </div>
+<div class="status-display" id="currentStatus">
+Estado actual: —
+</div>
 
-  <button onclick="setStatus('Disponible')">🟢 Disponible</button>
-  <button onclick="setStatus('En servicio')">🟡 En servicio</button>
-  <button onclick="setStatus('No disponible')">🔴 No disponible</button>
-
-  <button onclick="logout()">Cerrar sesión</button>
+<button onclick="setStatus('Disponible')">🟢 Disponible</button>
+<button onclick="setStatus('En servicio')">🟡 En servicio</button>
+<button onclick="setStatus('No disponible')">🔴 No disponible</button>
+<button onclick="logout()">Cerrar sesión</button>
 
 </div>
 
-<!-- Firebase -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
 import { getFirestore, doc, setDoc, getDoc }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_STORAGE_BUCKET",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+const firebaseConfig={
+  apiKey:"TU_API_KEY",
+  authDomain:"TU_AUTH_DOMAIN",
+  projectId:"TU_PROJECT_ID",
+  storageBucket:"TU_STORAGE_BUCKET",
+  messagingSenderId:"TU_SENDER_ID",
+  appId:"TU_APP_ID"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
 
-// Protección
-import { setPersistence, browserLocalPersistence }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+let checked=false;
 
-// Forzar persistencia de sesión
-setPersistence(auth, browserLocalPersistence)
-  .then(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        loadStatus();
-      } else {
-        window.location.replace("stats.html");
-      }
-    });
+onAuthStateChanged(auth,(user)=>{
+  if(!checked){
+    checked=true;
+    if(user){
+      document.body.style.display="flex";
+      loadStatus();
+    }else{
+      window.location.replace("login.html");
+    }
+  }
+});
+
+window.setStatus=async function(status){
+  await setDoc(doc(db,"grua","estado"),{
+    status:status,
+    timestamp:new Date()
   });
-
-
-// Guardar estado
-window.setStatus = async function(status){
-  await setDoc(doc(db, "grua", "estado"), {
-    status: status,
-    timestamp: new Date()
-  });
-  document.getElementById("currentStatus").innerText = 
-    "Estado actual: " + status;
+  document.getElementById("currentStatus").innerText="Estado actual: "+status;
 }
 
-// Cargar estado
 async function loadStatus(){
-  const docSnap = await getDoc(doc(db, "grua", "estado"));
-  if (docSnap.exists()) {
-    document.getElementById("currentStatus").innerText = 
-      "Estado actual: " + docSnap.data().status;
+  const snap=await getDoc(doc(db,"grua","estado"));
+  if(snap.exists()){
+    document.getElementById("currentStatus").innerText=
+    "Estado actual: "+snap.data().status;
   }
 }
 
-// Logout
-window.logout = function(){
-  signOut(auth);
+window.logout=function(){
+  signOut(auth).then(()=>{
+    window.location.replace("login.html");
+  });
 }
-
 </script>
 
 <script>
 function toggleMode(){
-  const body = document.body;
-  body.classList.toggle("dark");
-  body.classList.toggle("light");
+  document.body.classList.toggle("dark");
+  document.body.classList.toggle("light");
 }
 </script>
 
