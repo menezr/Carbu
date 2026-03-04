@@ -32,12 +32,13 @@ body.light{background:var(--bg-light);color:var(--text-light);}
 body.dark{background:var(--bg-dark);color:var(--text-dark);}
 
 .login-box{
-  width:340px;
+  width:320px;
   padding:40px;
   border-radius:20px;
   backdrop-filter:blur(15px);
   box-shadow:0 20px 40px rgba(0,0,0,0.2);
   position:relative;
+  text-align:center;
 }
 
 body.light .login-box{
@@ -49,31 +50,45 @@ body.dark .login-box{
   border:1px solid var(--border-dark);
 }
 
-h2{text-align:center;margin-bottom:30px;}
+.logo{
+  width:140px;
+  margin-bottom:20px;
+}
+
+h2{margin-bottom:25px;}
 
 input{
-  width:100%;
-  padding:14px;
-  margin-bottom:20px;
-  border-radius:12px;
+  width:85%;
+  padding:12px;
+  margin:0 auto 18px auto;
+  display:block;
+  border-radius:10px;
   border:none;
   outline:none;
   background:rgba(255,255,255,0.7);
 }
+
 body.dark input{
   background:rgba(255,255,255,0.1);
   color:white;
 }
 
 button{
-  width:100%;
-  padding:14px;
+  width:85%;
+  padding:12px;
   border:none;
-  border-radius:12px;
+  border-radius:10px;
   background:var(--accent);
   color:white;
   font-weight:bold;
   cursor:pointer;
+  display:block;
+  margin:0 auto;
+  transition:0.3s;
+}
+
+button:hover{
+  opacity:0.9;
 }
 
 .switch{
@@ -81,26 +96,45 @@ button{
   top:20px;
   right:20px;
 }
+
 .switch input{display:none;}
 
 .slider{
-  width:50px;height:25px;
+  width:55px;
+  height:28px;
   background:#ccc;
   border-radius:50px;
   position:relative;
   cursor:pointer;
+  transition:0.3s;
+  display:flex;
+  align-items:center;
 }
+
 .slider:before{
-  content:"";
+  content:"☀️";
   position:absolute;
-  width:20px;height:20px;
+  width:24px;
+  height:24px;
   border-radius:50%;
-  top:2.5px;left:3px;
+  top:2px;
+  left:2px;
   background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
   transition:0.3s;
 }
-input:checked + .slider{background:#222;}
-input:checked + .slider:before{transform:translateX(24px);}
+
+input:checked + .slider{
+  background:#222;
+}
+
+input:checked + .slider:before{
+  transform:translateX(27px);
+  content:"🌙";
+}
 
 .error{
   color:red;
@@ -120,6 +154,8 @@ input:checked + .slider:before{transform:translateX(24px);}
 <div class="slider"></div>
 </label>
 
+<img src="https://github.com/menezr/Carbu/blob/main/images/logoweb.png?raw=true" class="logo">
+
 <h2>Login</h2>
 
 <div class="error" id="errorMsg"></div>
@@ -135,7 +171,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getAuth, signInWithEmailAndPassword }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const firebaseConfig={
+const firebaseConfig = {
   apiKey: "AIzaSyCeMyqzeP7QFo3BTb5nB709RdkRgppXK1o",
   authDomain: "servicestatus-121343.firebaseapp.com",
   projectId: "servicestatus-121343",
@@ -144,13 +180,13 @@ const firebaseConfig={
   appId: "1:377414557056:web:02ba4551c2ce1b1437f565"
 };
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-window.login=function(){
-  const email=document.getElementById("email").value;
-  const password=document.getElementById("password").value;
-  const error=document.getElementById("errorMsg");
+window.login = function(){
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const error = document.getElementById("errorMsg");
 
   signInWithEmailAndPassword(auth,email,password)
   .then(()=>{window.location.href="panel.html";})
