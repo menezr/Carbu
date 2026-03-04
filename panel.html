@@ -13,8 +13,8 @@
   --card-dark:rgba(15,23,42,0.6);
   --text-light:#1e293b;
   --text-dark:#f1f5f9;
-  --border-light:rgba(255,255,255,0.4);
-  --border-dark:rgba(255,255,255,0.1);
+  --border-light:rgba(0,0,0,0.2);
+  --border-dark:rgba(255,255,255,0.2);
   --accent:#dc2626;
 }
 
@@ -32,12 +32,13 @@ body.light{background:var(--bg-light);color:var(--text-light);}
 body.dark{background:var(--bg-dark);color:var(--text-dark);}
 
 .panel-box{
-  width:360px;
+  width:420px;
   padding:40px;
   border-radius:20px;
   backdrop-filter:blur(15px);
   box-shadow:0 20px 40px rgba(0,0,0,0.2);
   position:relative;
+  text-align:center;
 }
 
 body.light .panel-box{
@@ -49,17 +50,46 @@ body.dark .panel-box{
   border:1px solid var(--border-dark);
 }
 
-h2{text-align:center;margin-bottom:20px;}
+h2{
+  margin-bottom:25px;
+}
 
-button{
-  width:100%;
-  padding:14px;
-  margin-bottom:15px;
-  border:none;
-  border-radius:12px;
+.status-buttons{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:25px;
+}
+
+.status-btn{
+  flex:1;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid black;
+  background:transparent;
+  cursor:pointer;
+  transition:0.3s;
+  font-weight:500;
+}
+
+body.dark .status-btn{
+  border:1px solid white;
+  color:white;
+}
+
+.status-btn.active{
   background:var(--accent);
   color:white;
-  font-weight:bold;
+  border:none;
+}
+
+.logout{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  background:#333;
+  color:white;
   cursor:pointer;
 }
 
@@ -68,32 +98,43 @@ button{
   top:20px;
   right:20px;
 }
+
 .switch input{display:none;}
 
 .slider{
-  width:50px;height:25px;
+  width:55px;
+  height:28px;
   background:#ccc;
   border-radius:50px;
   position:relative;
   cursor:pointer;
-  transition:0.3s;
+  display:flex;
+  align-items:center;
 }
-.slider:before{
-  content:"";
-  position:absolute;
-  width:20px;height:20px;
-  border-radius:50%;
-  top:2.5px;left:3px;
-  background:white;
-  transition:0.3s;
-}
-input:checked + .slider{background:#222;}
-input:checked + .slider:before{transform:translateX(24px);}
 
-.status-display{
-  text-align:center;
-  margin-bottom:20px;
-  font-weight:bold;
+.slider:before{
+  content:"☀️";
+  position:absolute;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  top:2px;
+  left:2px;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  transition:0.3s;
+}
+
+input:checked + .slider{
+  background:#222;
+}
+
+input:checked + .slider:before{
+  transform:translateX(27px);
+  content:"🌙";
 }
 </style>
 </head>
@@ -109,14 +150,13 @@ input:checked + .slider:before{transform:translateX(24px);}
 
 <h2>Panel de Estado</h2>
 
-<div class="status-display" id="currentStatus">
-Estado actual: —
+<div class="status-buttons">
+  <button class="status-btn" onclick="setStatus('Disponible', this)">Disponible</button>
+  <button class="status-btn" onclick="setStatus('En servicio', this)">En servicio</button>
+  <button class="status-btn" onclick="setStatus('No disponible', this)">No disponible</button>
 </div>
 
-<button onclick="setStatus('Disponible')">🟢 Disponible</button>
-<button onclick="setStatus('En servicio')">🟡 En servicio</button>
-<button onclick="setStatus('No disponible')">🔴 No disponible</button>
-<button onclick="logout()">Cerrar sesión</button>
+<button class="logout" onclick="logout()">Cerrar sesión</button>
 
 </div>
 
@@ -127,7 +167,7 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const firebaseConfig={
+const firebaseConfig = {
   apiKey: "AIzaSyCeMyqzeP7QFo3BTb5nB709RdkRgppXK1o",
   authDomain: "servicestatus-121343.firebaseapp.com",
   projectId: "servicestatus-121343",
@@ -136,43 +176,47 @@ const firebaseConfig={
   appId: "1:377414557056:web:02ba4551c2ce1b1437f565"
 };
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
-
-let checked=false;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 onAuthStateChanged(auth,(user)=>{
-  if(!checked){
-    checked=true;
-    if(user){
-      document.body.style.display="flex";
-      loadStatus();
-    }else{
-      window.location.replace("login.html");
-    }
+  if(user){
+    document.body.style.display="flex";
+    loadStatus();
+  }else{
+    window.location.href="login.html";
   }
 });
 
-window.setStatus=async function(status){
+window.setStatus = async function(status, element){
   await setDoc(doc(db,"grua","estado"),{
     status:status,
     timestamp:new Date()
   });
-  document.getElementById("currentStatus").innerText="Estado actual: "+status;
+
+  document.querySelectorAll(".status-btn").forEach(btn=>{
+    btn.classList.remove("active");
+  });
+
+  element.classList.add("active");
 }
 
 async function loadStatus(){
   const snap=await getDoc(doc(db,"grua","estado"));
   if(snap.exists()){
-    document.getElementById("currentStatus").innerText=
-    "Estado actual: "+snap.data().status;
+    const current=snap.data().status;
+    document.querySelectorAll(".status-btn").forEach(btn=>{
+      if(btn.innerText===current){
+        btn.classList.add("active");
+      }
+    });
   }
 }
 
 window.logout=function(){
   signOut(auth).then(()=>{
-    window.location.replace("login.html");
+    window.location.href="login.html";
   });
 }
 </script>
