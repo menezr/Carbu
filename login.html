@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<style>
+:root{
+  --bg-light:#f5f7fa;
+  --bg-dark:#0f172a;
+  --card-light:rgba(255,255,255,0.6);
+  --card-dark:rgba(15,23,42,0.6);
+  --text-light:#1e293b;
+  --text-dark:#f1f5f9;
+  --border-light:rgba(255,255,255,0.4);
+  --border-dark:rgba(255,255,255,0.1);
+  --accent:#dc2626;
+}
+
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  height:100vh;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  transition:0.4s;
+}
+
+body.light{background:var(--bg-light);color:var(--text-light);}
+body.dark{background:var(--bg-dark);color:var(--text-dark);}
+
+.login-box{
+  width:340px;
+  padding:40px;
+  border-radius:20px;
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+  position:relative;
+}
+
+body.light .login-box{
+  background:var(--card-light);
+  border:1px solid var(--border-light);
+}
+body.dark .login-box{
+  background:var(--card-dark);
+  border:1px solid var(--border-dark);
+}
+
+h2{text-align:center;margin-bottom:30px;}
+
+input{
+  width:100%;
+  padding:14px;
+  margin-bottom:20px;
+  border-radius:12px;
+  border:none;
+  outline:none;
+  background:rgba(255,255,255,0.7);
+}
+body.dark input{
+  background:rgba(255,255,255,0.1);
+  color:white;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:var(--accent);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.switch{
+  position:absolute;
+  top:20px;
+  right:20px;
+}
+.switch input{display:none;}
+
+.slider{
+  width:50px;height:25px;
+  background:#ccc;
+  border-radius:50px;
+  position:relative;
+  cursor:pointer;
+  transition:0.3s;
+}
+.slider:before{
+  content:"";
+  position:absolute;
+  width:20px;height:20px;
+  border-radius:50%;
+  top:2.5px;left:3px;
+  background:white;
+  transition:0.3s;
+}
+input:checked + .slider{background:#222;}
+input:checked + .slider:before{transform:translateX(24px);}
+
+.error{
+  color:red;
+  text-align:center;
+  margin-bottom:10px;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body class="light">
+
+<div class="login-box">
+
+  <label class="switch">
+    <input type="checkbox" onclick="toggleMode()">
+    <div class="slider"></div>
+  </label>
+
+  <h2>Login</h2>
+
+  <div class="error" id="errorMsg"></div>
+
+  <input type="email" id="email" placeholder="Correo">
+  <input type="password" id="password" placeholder="Contraseña">
+  <button onclick="login()">Ingresar</button>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserLocalPersistence }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey:"TU_API_KEY",
+  authDomain:"TU_AUTH_DOMAIN",
+  projectId:"TU_PROJECT_ID",
+  storageBucket:"TU_STORAGE_BUCKET",
+  messagingSenderId:"TU_SENDER_ID",
+  appId:"TU_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+setPersistence(auth, browserLocalPersistence);
+
+let checked=false;
+
+onAuthStateChanged(auth,(user)=>{
+  if(!checked){
+    checked=true;
+    if(user){
+      window.location.replace("panel.html");
+    }else{
+      document.body.style.display="flex";
+    }
+  }
+});
+
+window.login=function(){
+  const email=document.getElementById("email").value;
+  const password=document.getElementById("password").value;
+  const error=document.getElementById("errorMsg");
+
+  signInWithEmailAndPassword(auth,email,password)
+  .then(()=>{window.location.replace("panel.html");})
+  .catch(()=>{error.innerText="Credenciales incorrectas";});
+}
+</script>
+
+<script>
+function toggleMode(){
+  document.body.classList.toggle("dark");
+  document.body.classList.toggle("light");
+}
+</script>
+
+</body>
+</html>
