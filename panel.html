@@ -3,504 +3,1134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Cotizador Vial Nicoya</title>
+
+<title>Asistencia Vial 50201</title>
 
 <style>
+
+/* =========================================================
+   LIQUID GLASS
+   ========================================================= */
+
 :root{
-  --bg-light:#f5f7fa;
-  --bg-dark:#0f172a;
-  --card-light:rgba(255,255,255,0.6);
-  --card-dark:rgba(15,23,42,0.6);
-  --text-light:#1e293b;
-  --text-dark:#f1f5f9;
-  --border-light:rgba(255,255,255,0.4);
-  --border-dark:rgba(255,255,255,0.1);
-  --accent:#dc2626;
+  --accent:#ff3b30;
+
+  --text-light:#111827;
+  --text-dark:#ffffff;
+
+  --glass-light:rgba(255,255,255,0.48);
+  --glass-dark:rgba(255,255,255,0.10);
+
+  --border-light:rgba(255,255,255,0.75);
+  --border-dark:rgba(255,255,255,0.22);
+
+  --input-light:rgba(255,255,255,0.48);
+  --input-dark:rgba(255,255,255,0.09);
 }
+
+
+/* RESET */
 
 *{
   box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    "Segoe UI",
+    sans-serif;
 }
+
+
+/* =========================================================
+   FONDO
+   ========================================================= */
 
 body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
+
   min-height:100vh;
+
   display:flex;
-  justify-content:center;
   align-items:center;
-  padding:16px;
-  transition:0.4s;
+  justify-content:center;
+
+  padding:18px;
+
+  overflow:hidden;
+
+  transition:
+    background 0.5s,
+    color 0.4s;
+
+  position:relative;
 }
+
+
+/* FONDO CLARO */
 
 body.light{
-  background:var(--bg-light);
+
   color:var(--text-light);
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(255,255,255,0.95),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 85% 85%,
+      rgba(255,80,70,0.22),
+      transparent 40%
+    ),
+    linear-gradient(
+      135deg,
+      #e9eef5,
+      #f8fafc
+    );
 }
+
+
+/* FONDO OSCURO */
 
 body.dark{
-  background:var(--bg-dark);
+
   color:var(--text-dark);
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(255,60,48,0.20),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(255,255,255,0.08),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #050505,
+      #171717
+    );
 }
 
-/* TARJETA PRINCIPAL */
+
+/* =========================================================
+   BRILLOS DE FONDO
+   ========================================================= */
+
+body::before,
+body::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:240px;
+  height:240px;
+
+  border-radius:50%;
+
+  filter:blur(70px);
+
+  pointer-events:none;
+
+  transition:0.5s;
+}
+
+
+body::before{
+
+  top:-100px;
+  left:-80px;
+
+  background:rgba(255,255,255,0.45);
+}
+
+
+body::after{
+
+  bottom:-100px;
+  right:-80px;
+
+  background:rgba(255,59,48,0.18);
+}
+
+
+/* =========================================================
+   GLASS PRINCIPAL
+   ========================================================= */
 
 .glass{
+
+  position:relative;
+
   width:100%;
   max-width:400px;
+
   padding:24px;
-  border-radius:20px;
-  backdrop-filter:blur(15px);
-  -webkit-backdrop-filter:blur(15px);
-  box-shadow:0 20px 40px rgba(0,0,0,0.2);
-  position:relative;
-  transition:0.4s;
+
+  border-radius:28px;
+
+  background:var(--glass-light);
+
+  border:1px solid var(--border-light);
+
+  backdrop-filter:
+    blur(30px)
+    saturate(180%);
+
+  -webkit-backdrop-filter:
+    blur(30px)
+    saturate(180%);
+
+  box-shadow:
+
+    0 25px 60px rgba(0,0,0,0.16),
+
+    inset 0 1px 1px rgba(255,255,255,0.8),
+
+    inset 0 -1px 1px rgba(255,255,255,0.18);
+
+  overflow:hidden;
+
+  transition:
+    background 0.4s,
+    border 0.4s,
+    box-shadow 0.4s;
 }
 
-body.light .glass{
-  background:var(--card-light);
-  border:1px solid var(--border-light);
-}
 
 body.dark .glass{
-  background:var(--card-dark);
+
+  background:var(--glass-dark);
+
   border:1px solid var(--border-dark);
+
+  box-shadow:
+
+    0 25px 60px rgba(0,0,0,0.45),
+
+    inset 0 1px 1px rgba(255,255,255,0.22),
+
+    inset 0 -1px 1px rgba(255,255,255,0.05);
 }
 
-/* SWITCH MODO */
+
+/* REFLEJO SUPERIOR */
+
+.glass::before{
+
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:8%;
+
+  width:84%;
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.9),
+      transparent
+    );
+
+  opacity:0.8;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header{
+
+  text-align:center;
+
+  margin-bottom:24px;
+}
+
+
+.logo-icon{
+
+  width:54px;
+  height:54px;
+
+  margin:0 auto 10px;
+
+  border-radius:17px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:27px;
+
+  background:
+    rgba(255,255,255,0.32);
+
+  border:1px solid rgba(255,255,255,0.55);
+
+  box-shadow:
+
+    inset 0 1px 1px rgba(255,255,255,0.8),
+
+    0 8px 20px rgba(0,0,0,0.12);
+}
+
+
+h1{
+
+  font-size:23px;
+
+  font-weight:700;
+
+  letter-spacing:-0.5px;
+
+  margin-bottom:4px;
+
+  color:var(--accent);
+}
+
+
+.subtitle{
+
+  font-size:12px;
+
+  opacity:0.6;
+
+}
+
+
+/* =========================================================
+   MODO
+   ========================================================= */
 
 .mode-switch{
+
   position:absolute;
-  top:18px;
-  right:18px;
+
+  top:20px;
+  right:20px;
+
+  z-index:5;
 }
 
+
 .mode-switch input{
+
   display:none;
 }
 
+
 .slider{
-  width:55px;
-  height:28px;
-  background:#ccc;
-  border-radius:50px;
+
+  width:52px;
+  height:29px;
+
+  border-radius:30px;
+
+  background:rgba(0,0,0,0.12);
+
+  border:1px solid rgba(255,255,255,0.45);
+
   position:relative;
+
   cursor:pointer;
-  transition:0.3s;
+
   display:flex;
   align-items:center;
+
+  transition:0.35s;
+
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.12);
 }
 
-.slider:before{
+
+.slider::before{
+
   content:"☀️";
+
   position:absolute;
-  width:24px;
-  height:24px;
-  border-radius:50%;
+
+  width:23px;
+  height:23px;
+
   top:2px;
   left:2px;
-  background:white;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,0.85);
+
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:14px;
-  transition:0.3s;
+
+  font-size:13px;
+
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.18);
+
+  transition:0.35s;
 }
+
 
 .mode-switch input:checked + .slider{
-  background:#222;
+
+  background:rgba(255,255,255,0.12);
 }
 
-.mode-switch input:checked + .slider:before{
-  transform:translateX(27px);
+
+.mode-switch input:checked + .slider::before{
+
+  transform:translateX(23px);
+
   content:"🌙";
 }
 
-/* TITULO */
 
-h1{
-  font-size:20px;
-  text-align:center;
-  margin:8px 55px 24px 0;
-  color:var(--accent);
-}
-
-/* LABELS */
+/* =========================================================
+   LABELS
+   ========================================================= */
 
 label{
-  font-size:12px;
-  opacity:0.8;
-  margin-bottom:6px;
+
   display:block;
+
+  font-size:12px;
+
+  font-weight:500;
+
+  margin-bottom:7px;
+
+  opacity:0.65;
 }
 
-/* INPUTS */
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
 
 input[type=number]{
+
   width:100%;
-  padding:12px;
-  margin:0 auto 18px auto;
-  display:block;
-  border-radius:10px;
+
+  padding:13px 14px;
+
+  margin-bottom:18px;
+
   border:none;
   outline:none;
-  background:rgba(255,255,255,0.7);
+
+  border-radius:14px;
+
   font-size:16px;
-  color:#1e293b;
+
+  background:var(--input-light);
+
+  color:var(--text-light);
+
+  border:1px solid rgba(255,255,255,0.4);
+
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.04);
+
   transition:0.3s;
 }
 
+
 body.dark input[type=number]{
-  background:rgba(255,255,255,0.1);
+
+  background:var(--input-dark);
+
   color:white;
+
+  border-color:rgba(255,255,255,0.12);
 }
 
-input[type=number]::placeholder{
-  color:#777;
+
+input[type=number]:focus{
+
+  border-color:rgba(255,59,48,0.5);
+
+  box-shadow:
+    0 0 0 3px rgba(255,59,48,0.10);
 }
 
-/* SERVICIOS */
+
+/* =========================================================
+   SERVICIOS
+   ========================================================= */
 
 .services{
+
   display:grid;
+
   grid-template-columns:1fr 1fr;
+
   gap:10px;
+
   margin-bottom:18px;
 }
 
+
 .service{
-  padding:12px 8px;
-  border-radius:10px;
-  background:rgba(255,255,255,0.35);
-  border:2px solid transparent;
+
+  padding:14px 8px;
+
+  border-radius:17px;
+
   text-align:center;
+
   cursor:pointer;
-  transition:all 0.3s;
+
   font-size:13px;
+
+  background:rgba(255,255,255,0.27);
+
+  border:1px solid rgba(255,255,255,0.38);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.55);
+
+  transition:
+    transform 0.2s,
+    background 0.3s,
+    border 0.3s,
+    box-shadow 0.3s;
 }
+
 
 body.dark .service{
-  background:rgba(255,255,255,0.08);
+
+  background:rgba(255,255,255,0.06);
+
+  border-color:rgba(255,255,255,0.12);
 }
+
+
+.service:active{
+
+  transform:scale(0.97);
+}
+
 
 .service.active{
-  border-color:var(--accent);
-  background:rgba(220,38,38,0.15);
+
+  background:rgba(255,59,48,0.15);
+
+  border-color:rgba(255,59,48,0.65);
+
+  box-shadow:
+
+    inset 0 1px 1px rgba(255,255,255,0.35),
+
+    0 5px 18px rgba(255,59,48,0.12);
 }
 
-.service:hover{
-  transform:translateY(-1px);
-}
 
-/* COMBUSTIBLE */
+/* =========================================================
+   COMBUSTIBLE
+   ========================================================= */
 
 .fuel-box{
+
   display:none;
+
   gap:10px;
+
   margin-bottom:4px;
 }
 
+
 .fuel-box.show{
+
   display:grid;
+
   grid-template-columns:1fr 1fr;
 }
 
-/* TOGGLE NOCTURNO */
+
+/* =========================================================
+   SWITCH NOCTURNO
+   ========================================================= */
 
 .toggle{
+
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
-  margin:4px 0 18px;
-  font-size:14px;
+
+  margin:3px 0 18px;
+
+  font-size:13px;
 }
+
 
 .switch{
-  width:55px;
-  height:28px;
-  background:#ccc;
-  border-radius:50px;
+
+  width:52px;
+  height:29px;
+
+  border-radius:30px;
+
+  background:rgba(0,0,0,0.12);
+
+  border:1px solid rgba(255,255,255,0.35);
+
   position:relative;
+
   cursor:pointer;
+
   transition:0.3s;
 }
 
-.switch.on{
-  background:var(--accent);
-}
 
-.switch:after{
+.switch::after{
+
   content:"";
-  width:24px;
-  height:24px;
-  background:white;
-  border-radius:50%;
+
   position:absolute;
+
+  width:23px;
+  height:23px;
+
   top:2px;
   left:2px;
+
+  background:white;
+
+  border-radius:50%;
+
+  box-shadow:
+    0 2px 7px rgba(0,0,0,0.2);
+
   transition:0.3s;
 }
 
-.switch.on:after{
-  left:29px;
+
+.switch.on{
+
+  background:var(--accent);
+
+  border-color:rgba(255,255,255,0.25);
 }
 
-/* TOTAL */
+
+.switch.on::after{
+
+  left:25px;
+}
+
+
+/* =========================================================
+   TOTAL
+   ========================================================= */
 
 .total{
-  background:rgba(220,38,38,0.12);
-  border:1px solid rgba(220,38,38,0.3);
-  border-radius:20px;
-  padding:16px;
-  text-align:center;
+
+  padding:17px;
+
   margin-bottom:18px;
+
+  text-align:center;
+
+  border-radius:21px;
+
+  background:rgba(255,59,48,0.09);
+
+  border:1px solid rgba(255,59,48,0.22);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.35);
 }
 
-.total div:first-child{
-  font-size:14px;
-  margin-bottom:2px;
+
+.total-title{
+
+  font-size:13px;
+
+  opacity:0.65;
+
+  margin-bottom:3px;
 }
+
 
 .total span{
-  font-size:32px;
+
+  font-size:34px;
+
+  line-height:1.1;
+
   font-weight:700;
+
+  letter-spacing:-1px;
+
   color:var(--accent);
 }
 
+
 .breakdown{
-  font-size:11px;
-  opacity:0.7;
-  margin-top:7px;
+
+  font-size:10px;
+
   line-height:1.4;
+
+  opacity:0.55;
+
+  margin-top:8px;
 }
 
-/* BOTON */
+
+/* =========================================================
+   BOTÓN WHATSAPP
+   ========================================================= */
 
 button{
+
   width:100%;
-  padding:12px;
+
+  padding:14px;
+
   border:none;
-  border-radius:10px;
+
+  border-radius:15px;
+
   background:var(--accent);
+
   color:white;
-  font-weight:bold;
+
   font-size:15px;
+
+  font-weight:700;
+
   cursor:pointer;
-  display:block;
-  margin:0 auto;
-  transition:0.3s;
+
+  box-shadow:
+
+    0 8px 20px rgba(255,59,48,0.25),
+
+    inset 0 1px 1px rgba(255,255,255,0.35);
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    opacity 0.2s;
 }
 
-button:hover{
-  opacity:0.9;
-  transform:translateY(-1px);
-}
 
 button:active{
-  transform:translateY(0);
+
+  transform:scale(0.98);
+
+  box-shadow:
+    0 4px 10px rgba(255,59,48,0.2);
 }
 
-/* CELULARES */
+
+button:hover{
+
+  opacity:0.92;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
 @media(max-width:420px){
+
   .glass{
-    padding:20px;
+
+    padding:21px;
+
+    border-radius:27px;
   }
 
   h1{
-    font-size:19px;
+
+    font-size:21px;
   }
 
   .total span{
-    font-size:30px;
+
+    font-size:32px;
   }
 }
+
 </style>
 </head>
 
+
 <body class="light">
+
 
 <div class="glass">
 
+
   <!-- MODO CLARO / OSCURO -->
+
   <label class="mode-switch">
-    <input type="checkbox" onclick="toggleMode()">
+
+    <input
+      type="checkbox"
+      onclick="toggleMode()">
+
     <div class="slider"></div>
+
   </label>
 
-  <h1>Asistencia Vial Nicoya</h1>
 
-  <label>Kilómetros desde Nicoya</label>
-  <input type="number" id="km" value="5" min="0">
+  <!-- HEADER -->
 
-  <label>Servicio</label>
+  <div class="header">
 
-  <div class="services">
-
-    <div class="service"
-         data-fee="4000"
-         data-type="fuel">
-      ⛽<br>
-      Gas<br>
-      ₡4,000
+    <div class="logo-icon">
+      🚗
     </div>
 
-    <div class="service active"
-         data-fee="6000"
-         data-type="other">
-      🔋<br>
-      Jumper<br>
-      ₡6,000
-    </div>
+    <h1>
+      Asistencia Vial 50201
+    </h1>
 
-    <div class="service"
-         data-fee="10000"
-         data-type="other">
-      🛞<br>
-      Llanta<br>
-      ₡10,000
-    </div>
-
-    <div class="service"
-         data-fee="14000"
-         data-type="other">
-      🔑<br>
-      Lockout<br>
-      ₡14,000
+    <div class="subtitle">
+      Cotizador de asistencia
     </div>
 
   </div>
 
-  <div class="fuel-box" id="fuelBox">
+
+  <!-- DISTANCIA -->
+
+  <label>
+    Kilómetros desde Nicoya
+  </label>
+
+  <input
+    type="number"
+    id="km"
+    value="5"
+    min="0">
+
+
+  <!-- SERVICIO -->
+
+  <label>
+    Servicio
+  </label>
+
+
+  <div class="services">
+
+
+    <div
+      class="service"
+      data-fee="4000"
+      data-type="fuel">
+
+      ⛽<br>
+      Gas<br>
+      ₡4,000
+
+    </div>
+
+
+    <div
+      class="service active"
+      data-fee="6000"
+      data-type="other">
+
+      🔋<br>
+      Jumper<br>
+      ₡6,000
+
+    </div>
+
+
+    <div
+      class="service"
+      data-fee="10000"
+      data-type="other">
+
+      🛞<br>
+      Llanta<br>
+      ₡10,000
+
+    </div>
+
+
+    <div
+      class="service"
+      data-fee="14000"
+      data-type="other">
+
+      🔑<br>
+      Lockout<br>
+      ₡14,000
+
+    </div>
+
+
+  </div>
+
+
+  <!-- COMBUSTIBLE -->
+
+  <div
+    class="fuel-box"
+    id="fuelBox">
+
 
     <div>
-      <label>Litros</label>
+
+      <label>
+        Litros
+      </label>
+
       <input
         type="number"
         id="litros"
         value="3"
         min="0"
         step="0.5">
+
     </div>
 
+
     <div>
-      <label>₡ por Litro</label>
+
+      <label>
+        ₡ por Litro
+      </label>
+
       <input
         type="number"
         id="precioLitro"
         value="750"
         min="0">
+
+    </div>
+
+
+  </div>
+
+
+  <!-- NOCTURNO -->
+
+  <div class="toggle">
+
+    <span>
+      Nocturno/Feriado +₡5,000
+    </span>
+
+    <div
+      class="switch"
+      id="night">
     </div>
 
   </div>
 
-  <div class="toggle">
-    <span>Nocturno/Feriado +₡5,000</span>
-    <div class="switch" id="night"></div>
-  </div>
+
+  <!-- TOTAL -->
 
   <div class="total">
 
-    <div>Total</div>
+    <div class="total-title">
+      Total
+    </div>
 
-    <span id="total">₡11,000</span>
+    <span id="total">
+      ₡11,000
+    </span>
 
-    <div class="breakdown" id="breakdown"></div>
+    <div
+      class="breakdown"
+      id="breakdown">
+    </div>
 
   </div>
 
-  <button onclick="copiar()">
-    Copiar y enviar WhatsApp
+
+  <!-- WHATSAPP -->
+
+  <button onclick="enviarWhatsApp()">
+    💬 Enviar cotización por WhatsApp
   </button>
+
 
 </div>
 
+
+
 <script>
 
+
+/* =========================================================
+   CONFIGURACIÓN
+   ========================================================= */
+
 const BASE = 5000;
+
 const KM_EXTRA = 550;
+
 const NIGHT_FEE = 5000;
 
+
 let serviceFee = 6000;
+
 let serviceType = "other";
+
 let night = false;
 
 
-/* SERVICIOS */
+/* =========================================================
+   SERVICIOS
+   ========================================================= */
 
-document.querySelectorAll('.service').forEach(btn => {
+document
+.querySelectorAll('.service')
+.forEach(btn => {
 
   btn.onclick = () => {
 
     document
-      .querySelectorAll('.service')
-      .forEach(b => b.classList.remove('active'));
+    .querySelectorAll('.service')
+    .forEach(b =>
+      b.classList.remove('active')
+    );
+
 
     btn.classList.add('active');
 
-    serviceFee = parseInt(btn.dataset.fee);
 
-    serviceType = btn.dataset.type;
+    serviceFee =
+      parseInt(btn.dataset.fee);
+
+
+    serviceType =
+      btn.dataset.type;
+
 
     document
-      .getElementById('fuelBox')
-      .classList.toggle('show', serviceType === 'fuel');
+    .getElementById('fuelBox')
+    .classList.toggle(
+      'show',
+      serviceType === 'fuel'
+    );
+
 
     calc();
 
-  }
+  };
 
 });
 
 
-/* NOCTURNO */
+/* =========================================================
+   NOCTURNO
+   ========================================================= */
 
-document.getElementById('night').onclick = () => {
+document
+.getElementById('night')
+.onclick = () => {
 
   night = !night;
 
   document
-    .getElementById('night')
-    .classList.toggle('on');
+  .getElementById('night')
+  .classList.toggle(
+    'on'
+  );
 
   calc();
 
 };
 
 
-/* INPUTS */
+/* =========================================================
+   INPUTS
+   ========================================================= */
 
-document.getElementById('km').oninput = calc;
-document.getElementById('litros').oninput = calc;
-document.getElementById('precioLitro').oninput = calc;
+document
+.getElementById('km')
+.oninput = calc;
 
 
-/* CALCULO */
+document
+.getElementById('litros')
+.oninput = calc;
+
+
+document
+.getElementById('precioLitro')
+.oninput = calc;
+
+
+/* =========================================================
+   CALCULAR
+   ========================================================= */
 
 function calc(){
 
   let km =
-    parseInt(document.getElementById('km').value) || 0;
+    parseInt(
+      document
+      .getElementById('km')
+      .value
+    ) || 0;
+
 
   let extraKm =
-    Math.max(0, km - 5) * KM_EXTRA;
+    Math.max(
+      0,
+      km - 5
+    ) * KM_EXTRA;
+
 
   let nightFee =
-    night ? NIGHT_FEE : 0;
+    night
+    ? NIGHT_FEE
+    : 0;
+
 
   let fuelCost = 0;
+
 
   if(serviceType === 'fuel'){
 
     let litros =
-      parseFloat(document.getElementById('litros').value) || 0;
+      parseFloat(
+        document
+        .getElementById('litros')
+        .value
+      ) || 0;
+
 
     let precio =
-      parseFloat(document.getElementById('precioLitro').value) || 0;
+      parseFloat(
+        document
+        .getElementById('precioLitro')
+        .value
+      ) || 0;
 
-    fuelCost = litros * precio;
+
+    fuelCost =
+      litros * precio;
 
   }
+
 
   let total =
     BASE +
@@ -509,60 +1139,125 @@ function calc(){
     nightFee +
     fuelCost;
 
-  document.getElementById('total').innerText =
-    '₡' + total.toLocaleString('es-CR');
+
+  document
+  .getElementById('total')
+  .innerText =
+    '₡' +
+    total.toLocaleString('es-CR');
 
 
   let desglose =
     `Base 5,000 + KM ${extraKm.toLocaleString('es-CR')} + Servicio ${serviceFee.toLocaleString('es-CR')}`;
 
-  if(nightFee)
-    desglose += ` + Nocturno 5,000`;
 
-  if(fuelCost)
-    desglose += ` + Combustible ${fuelCost.toLocaleString('es-CR')}`;
+  if(nightFee){
 
-  document.getElementById('breakdown').innerText =
+    desglose +=
+      ` + Nocturno 5,000`;
+
+  }
+
+
+  if(fuelCost){
+
+    desglose +=
+      ` + Combustible ${fuelCost.toLocaleString('es-CR')}`;
+
+  }
+
+
+  document
+  .getElementById('breakdown')
+  .innerText =
     desglose;
 
 }
 
 
-/* COPIAR */
+/* =========================================================
+   WHATSAPP
+   ========================================================= */
 
-function copiar(){
+function enviarWhatsApp(){
 
-  let total =
-    document.getElementById('total').innerText;
+  const total =
+    document
+    .getElementById('total')
+    .innerText;
 
-  let msg =
-    `Cotización Asistencia Vial Nicoya\n` +
-    `${document.getElementById('breakdown').innerText}\n` +
-    `Total: ${total}`;
 
-  navigator.clipboard.writeText(msg);
+  const breakdown =
+    document
+    .getElementById('breakdown')
+    .innerText;
 
-  alert('Copiado para WhatsApp');
+
+  const msg =
+`🚗 Asistencia Vial 50201
+
+${breakdown}
+
+💰 Total: ${total}`;
+
+
+  const encoded =
+    encodeURIComponent(msg);
+
+
+  /*
+     Primero intenta abrir
+     directamente la aplicación
+     de WhatsApp.
+  */
+
+  window.location.href =
+    `whatsapp://send?text=${encoded}`;
+
+
+  /*
+     Fallback para dispositivos
+     donde el esquema no funciona.
+  */
+
+  setTimeout(() => {
+
+    window.open(
+      `https://wa.me/?text=${encoded}`,
+      '_blank'
+    );
+
+  }, 1000);
 
 }
 
 
-/* MODO CLARO / OSCURO */
+/* =========================================================
+   MODO CLARO / OSCURO
+   ========================================================= */
 
 function toggleMode(){
 
-  document.body.classList.toggle('dark');
+  document.body
+  .classList
+  .toggle('dark');
 
-  document.body.classList.toggle('light');
+
+  document.body
+  .classList
+  .toggle('light');
 
 }
 
 
-/* CALCULO INICIAL */
+/* =========================================================
+   INICIALIZAR
+   ========================================================= */
 
 calc();
 
 </script>
+
 
 </body>
 </html>
