@@ -140,12 +140,14 @@
         }
 
         /* --- Header & Lang --- */
-        .lang-switcher {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
+.lang-switcher {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 4px; /* Opcional: espacio entre botones */
+}
 
         .lang-btn {
             background: none;
@@ -285,10 +287,16 @@
             transform: translateY(-3px);
         }
 
-        @media (max-width: 991.98px) {
-            .hero-title-center {
-                text-align: center;
-            }
+       @media (max-width: 991.98px) {
+    .lang-switcher {
+        flex-direction: column; /* Coloca un botón sobre el otro */
+        top: 15px;
+        right: 15px;
+    }
+
+    .hero-title-center {
+        text-align: center;
+    }
 
             .btn-group-custom {
                 justify-content: center;
@@ -329,17 +337,15 @@
 }
 
 .services-title {
-    font-family: var(--fuente-titulos);
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 1.1rem;
-    font-weight: 900;
-    color: #ffffff;
+    display: inline-block;
     background-color: var(--color-rojo);
-    display: table;
-    margin: 0 auto 25px;
-    padding: 8px 18px;
+    color: white;
+    padding: 5px 15px;
     border-radius: 4px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-size: 1rem;
 }
 
 .services-grid {
@@ -452,15 +458,17 @@
                     <img src="images/GRUA1fb-cover.jpg" alt="Servicio de Grúas Carbu en Guanacaste" class="hero-img">
                 </div>
             </div>
-        </div>
+        </div>https://github.com/menezr/Carbu/blob/main/index.html
     </main>
 
-    <!-- Servicios de asistencia vial -->
+<!-- Servicios de asistencia vial -->
     <section class="services-section">
-        <div class="container-fluid">
-            <h2 class="services-title" data-key="servicesTitle">
-                Asistencia vial
-            </h2>
+        <div class="container-fluid px-lg-5">
+            <div class="px-lg-5 mb-3 text-start-mobile">
+                <span class="services-title" data-key="servicesTitle">
+                    Asistencia vial
+                </span>
+            </div>
 
             <div class="services-grid">
 
