@@ -1,1494 +1,885 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, user-scalable=no">
-
-<title>Asistencia Vial 50201</title>
-
-
-<!-- =====================================================
-     ICONO DE LA APP
-     ===================================================== -->
-
-<link
-  rel="apple-touch-icon"
-  href="https://github.com/menezr/Carbu/raw/refs/heads/main/images/badge.png">
-
-<link
-  rel="icon"
-  type="image/png"
-  href="https://github.com/menezr/Carbu/raw/refs/heads/main/images/badge.png">
-
-
-<!-- =====================================================
-     CONFIGURACIÓN PARA iPHONE
-     ===================================================== -->
-
-<meta
-  name="apple-mobile-web-app-capable"
-  content="yes">
-
-<meta
-  name="apple-mobile-web-app-status-bar-style"
-  content="black-translucent">
-
-<meta
-  name="apple-mobile-web-app-title"
-  content="Asistencia Vial 50201">
-
-
-<style>
-
-/* =====================================================
-   LIQUID GLASS
-   ===================================================== */
-
-:root{
-
-  --accent:#ff3b30;
-
-  --text-light:#111827;
-  --text-dark:#ffffff;
-
-  --glass-light:rgba(255,255,255,0.48);
-  --glass-dark:rgba(255,255,255,0.10);
-
-  --border-light:rgba(255,255,255,0.75);
-  --border-dark:rgba(255,255,255,0.22);
-
-  --input-light:rgba(255,255,255,0.48);
-  --input-dark:rgba(255,255,255,0.09);
-
-}
-
-
-/* =====================================================
-   RESET
-   ===================================================== */
-
-*{
-
-  box-sizing:border-box;
-
-  margin:0;
-  padding:0;
-
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Display",
-    "SF Pro Text",
-    "Segoe UI",
-    sans-serif;
-
-}
-
-
-/* =====================================================
-   BODY
-   ===================================================== */
-
-body{
-
-  min-height:100vh;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  padding:18px;
-
-  overflow:hidden;
-
-  position:relative;
-
-  transition:
-    background 0.5s,
-    color 0.4s;
-
-}
-
-
-/* =====================================================
-   FONDO CLARO
-   ===================================================== */
-
-body.light{
-
-  color:var(--text-light);
-
-  background:
-
-    radial-gradient(
-      circle at 15% 15%,
-      rgba(255,255,255,0.95),
-      transparent 35%
-    ),
-
-    radial-gradient(
-      circle at 85% 85%,
-      rgba(255,80,70,0.22),
-      transparent 40%
-    ),
-
-    linear-gradient(
-      135deg,
-      #e9eef5,
-      #f8fafc
-    );
-
-}
-
-
-/* =====================================================
-   FONDO OSCURO
-   ===================================================== */
-
-body.dark{
-
-  color:var(--text-dark);
-
-  background:
-
-    radial-gradient(
-      circle at 15% 15%,
-      rgba(255,60,48,0.20),
-      transparent 35%
-    ),
-
-    radial-gradient(
-      circle at 90% 80%,
-      rgba(255,255,255,0.08),
-      transparent 35%
-    ),
-
-    linear-gradient(
-      135deg,
-      #050505,
-      #171717
-    );
-
-}
-
-
-/* =====================================================
-   BRILLOS DE FONDO
-   ===================================================== */
-
-body::before,
-body::after{
-
-  content:"";
-
-  position:absolute;
-
-  width:240px;
-  height:240px;
-
-  border-radius:50%;
-
-  filter:blur(70px);
-
-  pointer-events:none;
-
-  transition:0.5s;
-
-}
-
-
-body::before{
-
-  top:-100px;
-  left:-80px;
-
-  background:rgba(255,255,255,0.45);
-
-}
-
-
-body::after{
-
-  bottom:-100px;
-  right:-80px;
-
-  background:rgba(255,59,48,0.18);
-
-}
-
-
-/* =====================================================
-   TARJETA PRINCIPAL LIQUID GLASS
-   ===================================================== */
-
-.glass{
-
-  position:relative;
-
-  width:100%;
-
-  max-width:400px;
-
-  padding:24px;
-
-  border-radius:28px;
-
-  background:var(--glass-light);
-
-  border:1px solid var(--border-light);
-
-  backdrop-filter:
-    blur(30px)
-    saturate(180%);
-
-  -webkit-backdrop-filter:
-    blur(30px)
-    saturate(180%);
-
-  box-shadow:
-
-    0 25px 60px rgba(0,0,0,0.16),
-
-    inset 0 1px 1px rgba(255,255,255,0.8),
-
-    inset 0 -1px 1px rgba(255,255,255,0.18);
-
-  overflow:hidden;
-
-  transition:
-    background 0.4s,
-    border 0.4s,
-    box-shadow 0.4s;
-
-}
-
-
-body.dark .glass{
-
-  background:var(--glass-dark);
-
-  border:1px solid var(--border-dark);
-
-  box-shadow:
-
-    0 25px 60px rgba(0,0,0,0.45),
-
-    inset 0 1px 1px rgba(255,255,255,0.22),
-
-    inset 0 -1px 1px rgba(255,255,255,0.05);
-
-}
-
-
-/* REFLEJO SUPERIOR */
-
-.glass::before{
-
-  content:"";
-
-  position:absolute;
-
-  top:0;
-  left:8%;
-
-  width:84%;
-  height:1px;
-
-  background:
-
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255,255,255,0.9),
-      transparent
-    );
-
-  opacity:0.8;
-
-}
-
-
-/* =====================================================
-   HEADER
-   ===================================================== */
-
-.header{
-
-  text-align:center;
-
-  margin-bottom:24px;
-
-}
-
-
-/* CONTENEDOR DEL LOGO */
-
-.logo-icon{
-
-  width:80px;
-  height:80px;
-
-  margin:0 auto 12px;
-
-  border-radius:22px;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  background:rgba(255,255,255,0.28);
-
-  border:1px solid rgba(255,255,255,0.55);
-
-  box-shadow:
-
-    inset 0 1px 2px rgba(255,255,255,0.8),
-
-    0 8px 25px rgba(0,0,0,0.15);
-
-  overflow:hidden;
-
-}
-
-
-.logo-icon img{
-
-  width:70%;
-  height:70%;
-
-  object-fit:contain;
-
-  display:block;
-
-}
-
-
-/* LOGO EN MODO OSCURO */
-
-body.dark .logo-icon{
-
-  background:rgba(255,255,255,0.12);
-
-  border-color:rgba(255,255,255,0.30);
-
-  box-shadow:
-
-    inset 0 1px 2px rgba(255,255,255,0.35),
-
-    0 8px 25px rgba(0,0,0,0.30);
-
-}
-
-
-h1{
-
-  font-size:23px;
-
-  font-weight:700;
-
-  letter-spacing:-0.5px;
-
-  margin-bottom:4px;
-
-  color:var(--accent);
-
-}
-
-
-.subtitle{
-
-  font-size:12px;
-
-  opacity:0.6;
-
-}
-
-
-/* =====================================================
-   SWITCH MODO CLARO / OSCURO
-   ===================================================== */
-
-.mode-switch{
-
-  position:absolute;
-
-  top:20px;
-  right:20px;
-
-  z-index:5;
-
-}
-
-
-.mode-switch input{
-
-  display:none;
-
-}
-
-
-.slider{
-
-  width:52px;
-  height:29px;
-
-  border-radius:30px;
-
-  background:rgba(0,0,0,0.12);
-
-  border:1px solid rgba(255,255,255,0.45);
-
-  position:relative;
-
-  cursor:pointer;
-
-  display:flex;
-
-  align-items:center;
-
-  transition:0.35s;
-
-  box-shadow:
-    inset 0 1px 2px rgba(0,0,0,0.12);
-
-}
-
-
-.slider::before{
-
-  content:"☀️";
-
-  position:absolute;
-
-  width:23px;
-  height:23px;
-
-  top:2px;
-  left:2px;
-
-  border-radius:50%;
-
-  background:rgba(255,255,255,0.85);
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  font-size:13px;
-
-  box-shadow:
-    0 2px 6px rgba(0,0,0,0.18);
-
-  transition:0.35s;
-
-}
-
-
-.mode-switch input:checked + .slider{
-
-  background:rgba(255,255,255,0.12);
-
-}
-
-
-.mode-switch input:checked + .slider::before{
-
-  transform:translateX(23px);
-
-  content:"🌙";
-
-}
-
-
-/* =====================================================
-   LABELS
-   ===================================================== */
-
-label{
-
-  display:block;
-
-  font-size:12px;
-
-  font-weight:500;
-
-  margin-bottom:7px;
-
-  opacity:0.65;
-
-}
-
-
-/* =====================================================
-   INPUTS
-   ===================================================== */
-
-input[type=number]{
-
-  width:100%;
-
-  padding:13px 14px;
-
-  margin-bottom:18px;
-
-  border:none;
-
-  outline:none;
-
-  border-radius:14px;
-
-  font-size:16px;
-
-  background:var(--input-light);
-
-  color:var(--text-light);
-
-  border:1px solid rgba(255,255,255,0.4);
-
-  box-shadow:
-    inset 0 1px 2px rgba(0,0,0,0.04);
-
-  transition:0.3s;
-
-}
-
-
-body.dark input[type=number]{
-
-  background:var(--input-dark);
-
-  color:white;
-
-  border-color:rgba(255,255,255,0.12);
-
-}
-
-
-input[type=number]:focus{
-
-  border-color:rgba(255,59,48,0.5);
-
-  box-shadow:
-    0 0 0 3px rgba(255,59,48,0.10);
-
-}
-
-
-/* =====================================================
-   SERVICIOS
-   ===================================================== */
-
-.services{
-
-  display:grid;
-
-  grid-template-columns:1fr 1fr;
-
-  gap:10px;
-
-  margin-bottom:18px;
-
-}
-
-
-.service{
-
-  padding:14px 8px;
-
-  border-radius:17px;
-
-  text-align:center;
-
-  cursor:pointer;
-
-  font-size:13px;
-
-  background:rgba(255,255,255,0.27);
-
-  border:1px solid rgba(255,255,255,0.38);
-
-  box-shadow:
-
-    inset 0 1px 1px rgba(255,255,255,0.55);
-
-  transition:
-
-    transform 0.2s,
-
-    background 0.3s,
-
-    border 0.3s,
-
-    box-shadow 0.3s;
-
-}
-
-
-body.dark .service{
-
-  background:rgba(255,255,255,0.06);
-
-  border:1px solid rgba(255,255,255,0.12);
-
-}
-
-
-/* =====================================================
-   EFECTO AL TOCAR
-   ===================================================== */
-
-.service:active{
-
-  transform:scale(0.97);
-
-}
-
-
-/* =====================================================
-   SERVICIO SELECCIONADO
-   ===================================================== */
-
-.service.active{
-
-  background:rgba(255,59,48,0.15);
-
-  border:2px solid rgba(255,59,48,0.75);
-
-  box-shadow:
-
-    inset 0 1px 1px rgba(255,255,255,0.35),
-
-    0 5px 18px rgba(255,59,48,0.12);
-
-}
-
-
-/* =====================================================
-   SERVICIO SELECCIONADO EN MODO OSCURO
-   ===================================================== */
-
-body.dark .service.active{
-
-  background:rgba(255,59,48,0.18);
-
-  border:2px solid rgba(255,59,48,0.98);
-
-  box-shadow:
-
-    0 0 0 1px rgba(255,59,48,0.40),
-
-    0 0 18px rgba(255,59,48,0.32),
-
-    0 0 30px rgba(255,59,48,0.12),
-
-    inset 0 1px 2px rgba(255,255,255,0.22);
-
-}
-
-
-/* =====================================================
-   COMBUSTIBLE
-   ===================================================== */
-
-.fuel-box{
-
-  display:none;
-
-  gap:10px;
-
-  margin-bottom:4px;
-
-}
-
-
-.fuel-box.show{
-
-  display:grid;
-
-  grid-template-columns:1fr 1fr;
-
-}
-
-
-/* =====================================================
-   SWITCH NOCTURNO
-   ===================================================== */
-
-.toggle{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  margin:3px 0 18px;
-
-  font-size:13px;
-
-}
-
-
-.switch{
-
-  width:52px;
-  height:29px;
-
-  border-radius:30px;
-
-  background:rgba(0,0,0,0.12);
-
-  border:1px solid rgba(255,255,255,0.35);
-
-  position:relative;
-
-  cursor:pointer;
-
-  transition:0.3s;
-
-}
-
-
-.switch::after{
-
-  content:"";
-
-  position:absolute;
-
-  width:23px;
-  height:23px;
-
-  top:2px;
-  left:2px;
-
-  background:white;
-
-  border-radius:50%;
-
-  box-shadow:
-    0 2px 7px rgba(0,0,0,0.2);
-
-  transition:0.3s;
-
-}
-
-
-.switch.on{
-
-  background:var(--accent);
-
-  border-color:rgba(255,255,255,0.25);
-
-}
-
-
-.switch.on::after{
-
-  left:25px;
-
-}
-
-
-/* =====================================================
-   TOTAL
-   ===================================================== */
-
-.total{
-
-  padding:17px;
-
-  margin-bottom:18px;
-
-  text-align:center;
-
-  border-radius:21px;
-
-  background:rgba(255,59,48,0.09);
-
-  border:1px solid rgba(255,59,48,0.22);
-
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,0.35);
-
-}
-
-
-.total-title{
-
-  font-size:13px;
-
-  opacity:0.65;
-
-  margin-bottom:3px;
-
-}
-
-
-.total span{
-
-  font-size:34px;
-
-  line-height:1.1;
-
-  font-weight:700;
-
-  letter-spacing:-1px;
-
-  color:var(--accent);
-
-}
-
-
-.breakdown{
-
-  font-size:10px;
-
-  line-height:1.4;
-
-  opacity:0.55;
-
-  margin-top:8px;
-
-}
-
-
-/* =====================================================
-   BOTÓN WHATSAPP
-   ===================================================== */
-
-button{
-
-  width:100%;
-
-  padding:14px;
-
-  border:none;
-
-  border-radius:15px;
-
-  background:var(--accent);
-
-  color:white;
-
-  font-size:15px;
-
-  font-weight:700;
-
-  cursor:pointer;
-
-  box-shadow:
-
-    0 8px 20px rgba(255,59,48,0.25),
-
-    inset 0 1px 1px rgba(255,255,255,0.35);
-
-  transition:
-
-    transform 0.2s,
-
-    box-shadow 0.2s,
-
-    opacity 0.2s;
-
-}
-
-
-button:active{
-
-  transform:scale(0.98);
-
-  box-shadow:
-    0 4px 10px rgba(255,59,48,0.2);
-
-}
-
-
-button:hover{
-
-  opacity:0.92;
-
-}
-
-
-/* =====================================================
-   CELULARES
-   ===================================================== */
-
-@media(max-width:420px){
-
-  .glass{
-
-    padding:21px;
-
-    border-radius:27px;
-
-  }
-
-
-  h1{
-
-    font-size:21px;
-
-  }
-
-
-  .total span{
-
-    font-size:32px;
-
-  }
-
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#e31e24">
+
+    <title>Asistencia Vial 50201</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: #f3f4f6;
+            color: #202124;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: #f3f4f6;
+            padding-bottom: 30px;
+        }
+
+        /* HEADER */
+        .header {
+            background: #ffffff;
+            padding: 22px 20px 18px;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo {
+            width: 54px;
+            height: 54px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 800;
+            color: #202124;
+        }
+
+        .header-text p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 18px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 18px rgba(0,0,0,.06);
+            border: 1px solid #e8e8e8;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 13px;
+            color: #252525;
+        }
+
+        /* INPUTS */
+        .field {
+            margin-bottom: 13px;
+        }
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #d9dce1;
+            border-radius: 12px;
+            padding: 0 14px;
+            font-size: 16px;
+            outline: none;
+            background: #fafafa;
+            color: #202124;
+            transition: .2s;
+        }
+
+        input:focus {
+            border-color: #e31e24;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(227,30,36,.10);
+        }
+
+        /* SERVICES */
+        .services {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .service {
+            position: relative;
+            border: 2px solid #e7e7e7;
+            background: #fff;
+            border-radius: 15px;
+            padding: 12px 8px;
+            min-height: 126px;
+            cursor: pointer;
+            text-align: center;
+            transition: .18s ease;
+        }
+
+        .service:hover {
+            border-color: #f0a0a2;
+        }
+
+        .service.active {
+            border-color: #e31e24;
+            background: #fff7f7;
+            box-shadow: 0 4px 12px rgba(227,30,36,.10);
+        }
+
+        .service img {
+            width: 68px;
+            height: 68px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto 5px;
+        }
+
+        .service-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: #252525;
+        }
+
+        .service-price {
+            font-size: 12px;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        .service-check {
+            position: absolute;
+            top: 7px;
+            right: 8px;
+            width: 21px;
+            height: 21px;
+            border-radius: 50%;
+            background: #e31e24;
+            color: #fff;
+            font-size: 13px;
+            line-height: 21px;
+            display: none;
+            font-weight: 900;
+        }
+
+        .service.active .service-check {
+            display: block;
+        }
+
+        /* FUEL */
+        .fuel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        /* TOGGLE */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding-top: 4px;
+        }
+
+        .toggle-text {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .toggle {
+            position: relative;
+            width: 52px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #d5d7da;
+            border-radius: 30px;
+            transition: .2s;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,.2);
+            transition: .2s;
+        }
+
+        .toggle input:checked + .slider {
+            background: #e31e24;
+        }
+
+        .toggle input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* TOTAL */
+        .total-card {
+            background: #202124;
+            color: white;
+            border-radius: 18px;
+            padding: 19px;
+            margin-bottom: 16px;
+        }
+
+        .total-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .total-label {
+            font-size: 13px;
+            opacity: .72;
+        }
+
+        .total-value {
+            font-size: 30px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .breakdown {
+            margin-top: 13px;
+            padding-top: 13px;
+            border-top: 1px solid rgba(255,255,255,.14);
+            font-size: 12px;
+            line-height: 1.65;
+            color: rgba(255,255,255,.72);
+        }
+
+        /* BUTTON */
+        .whatsapp-button {
+            width: 100%;
+            border: 0;
+            border-radius: 14px;
+            background: #e31e24;
+            color: white;
+            min-height: 54px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(227,30,36,.22);
+            transition: .18s;
+        }
+
+        .whatsapp-button:hover {
+            background: #c9181e;
+        }
+
+        .whatsapp-button:active {
+            transform: scale(.985);
+        }
+
+        /* HISTORY */
+        .history-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .history-header .section-title {
+            margin: 0;
+        }
+
+        .clear-history {
+            border: 0;
+            background: transparent;
+            color: #e31e24;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .history-empty {
+            font-size: 13px;
+            color: #888;
+            text-align: center;
+            padding: 12px 0 4px;
+        }
+
+        .history-item {
+            border: 1px solid #e5e5e5;
+            border-radius: 13px;
+            padding: 13px;
+            margin-bottom: 9px;
+            background: #fafafa;
+        }
+
+        .history-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .history-main {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .history-name {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .history-vehicle {
+            font-size: 12px;
+            color: #777;
+            margin-top: 3px;
+        }
+
+        .history-total {
+            font-size: 15px;
+            font-weight: 900;
+            white-space: nowrap;
+            color: #e31e24;
+        }
+
+        .history-details {
+            margin-top: 9px;
+            padding-top: 9px;
+            border-top: 1px solid #e5e5e5;
+            color: #777;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 7px;
+            margin-top: 10px;
+        }
+
+        .history-action {
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            padding: 7px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .history-action.delete {
+            color: #e31e24;
+        }
+
+        /* DESKTOP */
+        @media (min-width: 700px) {
+            body {
+                padding: 25px 0;
+            }
+
+            .app {
+                min-height: auto;
+                border-radius: 22px;
+                overflow: hidden;
+                box-shadow: 0 10px 40px rgba(0,0,0,.08);
+            }
+
+            .header {
+                position: relative;
+            }
+        }
+    </style>
 </head>
 
+<body>
+
+<div class="app">
+
+    <header class="header">
+        <div class="header-content">
+            <img src="https://www.carbucr.com/images/logoweb.png"
+                 alt="CARBU"
+                 class="logo">
+
+            <div class="header-text">
+                <h1>Asistencia Vial 50201</h1>
+                <p>Cotizador de asistencia</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="content">
+
+        <!-- CLIENTE -->
+        <section class="card">
+            <div class="section-title">Cliente</div>
+
+            <div class="field">
+                <label for="name">Nombre</label>
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Nombre del cliente"
+                    autocomplete="off">
+            </div>
+
+            <div class="field">
+                <label for="vehicle">Vehículo</label>
+                <input
+                    type="text"
+                    id="vehicle"
+                    placeholder="Vehículo"
+                    autocomplete="off">
+            </div>
+        </section>
+
+        <!-- KILOMETROS -->
+        <section class="card">
+            <div class="section-title">Kilómetros desde Nicoya</div>
+
+            <div class="field">
+                <input
+                    type="number"
+                    id="km"
+                    min="0"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="0">
+            </div>
+        </section>
+
+        <!-- SERVICIO -->
+        <section class="card">
+            <div class="section-title">Servicio</div>
+
+            <div class="services">
+
+                <div class="service"
+                     data-service="gas"
+                     data-price="5000"
+                     onclick="selectService(this)">
+                    <div class="service-check">✓</div>
+                    <img src="https://www.carbucr.com/images/gas.png"
+                         alt="Gas">
+                    <div class="service-name">Gas</div>
+                    <div class="service-price">₡5,000</div>
+                </div>
+
+                <div class="service active"
+                     data-service="jumper"
+                     data-price="7000"
+                     onclick="selectService(this)">
+                    <div class="service-check">✓</div>
+                    <img src="https://www.carbucr.com/images/corriente.png"
+                         alt="Jumper">
+                    <div class="service-name">Jumper</div>
+                    <div class="service-price">₡7,000</div>
+                </div>
+
+                <div class="service"
+                     data-service="llanta"
+                     data-price="10000"
+                     onclick="selectService(this)">
+                    <div class="service-check">✓</div>
+                    <img src="https://www.carbucr.com/images/llanta.png"
+                         alt="Llanta">
+                    <div class="service-name">Llanta</div>
+                    <div class="service-price">₡10,000</div>
+                </div>
+
+                <div class="service"
+                     data-service="lockout"
+                     data-price="15000"
+                     onclick="selectService(this)">
+                    <div class="service-check">✓</div>
+                    <img src="https://www.carbucr.com/images/cierre.png"
+                         alt="Lockout">
+                    <div class="service-name">Lockout</div>
+                    <div class="service-price">₡15,000</div>
+                </div>
 
-<body class="light">
+            </div>
+        </section>
 
+        <!-- COMBUSTIBLE -->
+        <section class="card">
 
-<div class="glass">
+            <div class="section-title">Combustible</div>
 
+            <div class="fuel-grid">
 
-  <!-- =================================================
-       MODO CLARO / OSCURO
-       ================================================= -->
+                <div class="field">
+                    <label for="litros">Litros</label>
+                    <input
+                        type="number"
+                        id="litros"
+                        min="0"
+                        step="0.1"
+                        inputmode="decimal"
+                        placeholder="0">
+                </div>
 
-  <label class="mode-switch">
+                <div class="field">
+                    <label for="precioLitro">₡ por Litro</label>
+                    <input
+                        type="number"
+                        id="precioLitro"
+                        min="0"
+                        step="1"
+                        inputmode="numeric"
+                        placeholder="0">
+                </div>
 
-    <input
-      type="checkbox"
-      onclick="toggleMode()">
+            </div>
 
-    <div class="slider"></div>
+        </section>
 
-  </label>
+        <!-- NOCTURNO -->
+        <section class="card">
 
+            <div class="toggle-row">
 
-  <!-- =================================================
-       HEADER
-       ================================================= -->
+                <div class="toggle-text">
+                    Nocturno/Feriado +₡5,000
+                </div>
 
-  <div class="header">
+                <label class="toggle">
+                    <input type="checkbox" id="night">
+                    <span class="slider"></span>
+                </label>
 
-    <div class="logo-icon">
+            </div>
 
-      <img
-        src="https://github.com/menezr/Carbu/raw/refs/heads/main/images/logoweb.png"
-        alt="Asistencia Vial 50201">
+        </section>
 
-    </div>
+        <!-- TOTAL -->
+        <section class="total-card">
 
+            <div class="total-top">
 
-    <h1>
-      Asistencia Vial 50201
-    </h1>
+                <div class="total-label">
+                    Total
+                </div>
 
+                <div class="total-value" id="total">
+                    ₡12,000
+                </div>
 
-    <div class="subtitle">
-      Cotizador de asistencia
-    </div>
+            </div>
 
-  </div>
+            <div class="breakdown" id="breakdown">
+                Base ₡5,000 + KM ₡0 + Servicio ₡7,000
+            </div>
 
+        </section>
 
-  <!-- =================================================
-       KILÓMETROS
-       ================================================= -->
+        <!-- WHATSAPP -->
+        <button
+            class="whatsapp-button"
+            onclick="sendWhatsApp()">
+            💬 Enviar cotización por WhatsApp
+        </button>
 
-  <label>
-    Kilómetros desde Nicoya
-  </label>
+        <!-- HISTORIAL -->
+        <section class="card" style="margin-top:16px;">
 
+            <div class="history-header">
+                <div class="section-title">Historial</div>
 
-  <input
-    type="number"
-    id="km"
-    value="5"
-    min="0">
+                <button
+                    class="clear-history"
+                    onclick="clearHistory()">
+                    Borrar historial
+                </button>
+            </div>
 
+            <div id="historyList"></div>
 
-  <!-- =================================================
-       SERVICIO
-       ================================================= -->
+        </section>
 
-  <label>
-    Servicio
-  </label>
-
-
-  <div class="services">
-
-
-    <div
-      class="service"
-      data-fee="4000"
-      data-type="fuel">
-
-      ⛽<br>
-
-      Gas<br>
-
-      ₡4,000
-
-    </div>
-
-
-    <div
-      class="service active"
-      data-fee="6000"
-      data-type="other">
-
-      🔋<br>
-
-      Jumper<br>
-
-      ₡6,000
-
-    </div>
-
-
-    <div
-      class="service"
-      data-fee="10000"
-      data-type="other">
-
-      🛞<br>
-
-      Llanta<br>
-
-      ₡10,000
-
-    </div>
-
-
-    <div
-      class="service"
-      data-fee="14000"
-      data-type="other">
-
-      🔑<br>
-
-      Lockout<br>
-
-      ₡14,000
-
-    </div>
-
-
-  </div>
-
-
-  <!-- =================================================
-       COMBUSTIBLE
-       ================================================= -->
-
-  <div
-    class="fuel-box"
-    id="fuelBox">
-
-
-    <div>
-
-      <label>
-        Litros
-      </label>
-
-
-      <input
-        type="number"
-        id="litros"
-        value="3"
-        min="0"
-        step="0.5">
-
-    </div>
-
-
-    <div>
-
-      <label>
-        ₡ por Litro
-      </label>
-
-
-      <input
-        type="number"
-        id="precioLitro"
-        value="750"
-        min="0">
-
-    </div>
-
-
-  </div>
-
-
-  <!-- =================================================
-       NOCTURNO
-       ================================================= -->
-
-  <div class="toggle">
-
-    <span>
-      Nocturno/Feriado +₡5,000
-    </span>
-
-
-    <div
-      class="switch"
-      id="night">
-    </div>
-
-  </div>
-
-
-  <!-- =================================================
-       TOTAL
-       ================================================= -->
-
-  <div class="total">
-
-
-    <div class="total-title">
-      Total
-    </div>
-
-
-    <span id="total">
-      ₡11,000
-    </span>
-
-
-    <div
-      class="breakdown"
-      id="breakdown">
-    </div>
-
-
-  </div>
-
-
-  <!-- =================================================
-       WHATSAPP
-       ================================================= -->
-
-  <button onclick="enviarWhatsApp()">
-
-    💬 Enviar cotización por WhatsApp
-
-  </button>
-
+    </main>
 
 </div>
 
-
-
 <script>
+    const BASE = 5000;
+    const KM_BASE = 5;
+    const KM_PRICE = 550;
+    const NIGHT_FEE = 5000;
 
-/* =====================================================
-   CONFIGURACIÓN
-   ===================================================== */
+    let serviceFee = 7000;
+    let serviceType = "jumper";
 
-const BASE = 5000;
+    const kmInput = document.getElementById("km");
+    const litrosInput = document.getElementById("litros");
+    const precioLitroInput = document.getElementById("precioLitro");
+    const nightInput = document.getElementById("night");
 
-const KM_EXTRA = 550;
+    const nameInput = document.getElementById("name");
+    const vehicleInput = document.getElementById("vehicle");
 
-const NIGHT_FEE = 5000;
+    /* Selección de servicio */
+    function selectService(element) {
+        document.querySelectorAll(".service").forEach(service => {
+            service.classList.remove("active");
+        });
 
+        element.classList.add("active");
 
-let serviceFee = 6000;
+        serviceFee = Number(element.dataset.price);
+        serviceType = element.dataset.service;
 
-let serviceType = "other";
+        calculate();
+    }
 
-let night = false;
+    /* Cálculo de kilómetros */
+    function calculateKm(km) {
+        if (km <= KM_BASE) {
+            return BASE;
+        }
+        return Math.max(BASE, km * KM_PRICE);
+    }
 
+    /* Cálculo completo */
+    function calculate() {
+        const km = Math.max(0, Number(kmInput.value) || 0);
+        const litros = Math.max(0, Number(litrosInput.value) || 0);
+        const precioLitro = Math.max(0, Number(precioLitroInput.value) || 0);
 
-/* =====================================================
-   SERVICIOS
-   ===================================================== */
+        const kmCost = calculateKm(km);
+        const fuelCost = litros * precioLitro;
+        const nightFee = nightInput.checked ? NIGHT_FEE : 0;
 
-document
-.querySelectorAll('.service')
-.forEach(btn => {
+        const total = kmCost + serviceFee + nightFee + fuelCost;
 
-  btn.onclick = () => {
+        document.getElementById("total").textContent = "₡" + total.toLocaleString("es-CR");
 
+        let breakdown = "Base/KM " + kmCost.toLocaleString("es-CR") + " + Servicio " + serviceFee.toLocaleString("es-CR");
 
-    document
-    .querySelectorAll('.service')
-    .forEach(b => {
+        if (km > 0) {
+            if (km <= KM_BASE) {
+                breakdown = "Base " + kmCost.toLocaleString("es-CR") + " + Servicio " + serviceFee.toLocaleString("es-CR");
+            } else {
+                breakdown = "KM " + km + " × ₡550 = " + kmCost.toLocaleString("es-CR") + " + Servicio " + serviceFee.toLocaleString("es-CR");
+            }
+        }
 
-      b.classList.remove('active');
+        if (nightFee > 0) {
+            breakdown += " + Nocturno " + nightFee.toLocaleString("es-CR");
+        }
 
+        if (fuelCost > 0) {
+            breakdown += " + Combustible " + fuelCost.toLocaleString("es-CR");
+        }
+
+        document.getElementById("breakdown").textContent = breakdown;
+
+        return {
+            km,
+            kmCost,
+            litros,
+            precioLitro,
+            fuelCost,
+            nightFee,
+            total
+        };
+    }
+
+    /* Escuchar cambios */
+    [kmInput, litrosInput, precioLitroInput].forEach(input => {
+        input.addEventListener("input", calculate);
+        input.addEventListener("change", calculate);
     });
 
-
-    btn.classList.add('active');
-
-
-    serviceFee =
-      parseInt(btn.dataset.fee);
-
-
-    serviceType =
-      btn.dataset.type;
-
-
-    document
-    .getElementById('fuelBox')
-    .classList.toggle(
-      'show',
-      serviceType === 'fuel'
-    );
-
-
-    calc();
-
-  };
-
-});
-
-
-/* =====================================================
-   NOCTURNO
-   ===================================================== */
-
-document
-.getElementById('night')
-.onclick = () => {
-
-
-  night = !night;
-
-
-  document
-  .getElementById('night')
-  .classList.toggle(
-    'on'
-  );
-
-
-  calc();
-
-};
-
-
-/* =====================================================
-   INPUTS
-   ===================================================== */
-
-document
-.getElementById('km')
-.oninput = calc;
-
-
-document
-.getElementById('litros')
-.oninput = calc;
-
-
-document
-.getElementById('precioLitro')
-.oninput = calc;
-
-
-/* =====================================================
-   CALCULAR
-   ===================================================== */
-
-function calc(){
-
-
-  let km =
-    parseInt(
-      document
-      .getElementById('km')
-      .value
-    ) || 0;
-
-
-  let extraKm =
-    Math.max(
-      0,
-      km - 5
-    ) * KM_EXTRA;
-
-
-  let nightFee =
-    night
-    ? NIGHT_FEE
-    : 0;
-
-
-  let fuelCost = 0;
-
-
-  if(serviceType === 'fuel'){
-
-
-    let litros =
-      parseFloat(
-        document
-        .getElementById('litros')
-        .value
-      ) || 0;
-
-
-    let precio =
-      parseFloat(
-        document
-        .getElementById('precioLitro')
-        .value
-      ) || 0;
-
-
-    fuelCost =
-      litros * precio;
-
-  }
-
-
-  let total =
-    BASE +
-    extraKm +
-    serviceFee +
-    nightFee +
-    fuelCost;
-
-
-  document
-  .getElementById('total')
-  .innerText =
-    '₡' +
-    total.toLocaleString('es-CR');
-
-
-  let desglose =
-    `Base 5,000 + KM ${extraKm.toLocaleString('es-CR')} + Servicio ${serviceFee.toLocaleString('es-CR')}`;
-
-
-  if(nightFee){
-
-    desglose +=
-      ` + Nocturno 5,000`;
-
-  }
-
-
-  if(fuelCost){
-
-    desglose +=
-      ` + Combustible ${fuelCost.toLocaleString('es-CR')}`;
-
-  }
-
-
-  document
-  .getElementById('breakdown')
-  .innerText =
-    desglose;
-
-}
-
-
-/* =====================================================
-   WHATSAPP
-   ===================================================== */
-
-function enviarWhatsApp(){
-
-
-  const total =
-    document
-    .getElementById('total')
-    .innerText;
-
-
-  const breakdown =
-    document
-    .getElementById('breakdown')
-    .innerText;
-
-
-  const msg =
-
-`🚗 Asistencia Vial 50201
-
-${breakdown}
-
-💰 Total: ${total}`;
-
-
-  const encoded =
-    encodeURIComponent(msg);
-
-
-  /*
-     Intenta abrir directamente
-     la aplicación WhatsApp.
-  */
-
-  window.location.href =
-    `whatsapp://send?text=${encoded}`;
-
-
-  /*
-     Fallback para dispositivos
-     donde el esquema no funciona.
-  */
-
-  setTimeout(() => {
-
-    window.open(
-      `https://wa.me/?text=${encoded}`,
-      '_blank'
-    );
-
-  },1000);
-
-}
-
-
-/* =====================================================
-   MODO CLARO / OSCURO
-   ===================================================== */
-
-function toggleMode(){
-
-
-  document.body
-  .classList
-  .toggle('dark');
-
-
-  document.body
-  .classList
-  .toggle('light');
-
-}
-
-
-/* =====================================================
-   INICIALIZAR
-   ===================================================== */
-
-calc();
-
+    nightInput.addEventListener("change", calculate);
+    nameInput.addEventListener("input", calculate);
+    vehicleInput.addEventListener("input", calculate);
+
+    /* Historial */
+    function getHistory() {
+        try {
+            return JSON.parse(localStorage.getItem("carbuHistorial") || "[]");
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function saveHistory(record) {
+        const history = getHistory();
+        history.unshift(record);
+        const limitedHistory = history.slice(0, 100);
+
+        localStorage.setItem("carbuHistorial", JSON.stringify(limitedHistory));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const historyList = document.getElementById("historyList");
+        const history = getHistory();
+
+        if (history.length === 0) {
+            historyList.innerHTML = '<div class="history-empty">No hay servicios guardados.</div>';
+            return;
+        }
+
+        historyList.innerHTML = history.map((item, index) => {
+            const date = new Date(item.date);
+            const dateText = date.toLocaleDateString("es-CR") + " " + date.toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit" });
+
+            return `
+                <div class="history-item">
+                    <div class="history-main">
+                        <div>
+                            <div class="history-name">${escapeHTML(item.name || "Sin nombre")}</div>
+                            <div class="history-vehicle">${escapeHTML(item.vehicle || "Sin vehículo")}</div>
+                        </div>
+                        <div class="history-total">₡${Number(item.total).toLocaleString("es-CR")}</div>
+                    </div>
+                    <div class="history-details">
+                        ${dateText}<br>
+                        ${item.km} km · ${getServiceName(item.serviceType)}
+                        ${item.nightFee > 0 ? " · Nocturno/Feriado" : ""}
+                        ${item.fuelCost > 0 ? " · Combustible ₡" + Number(item.fuelCost).toLocaleString("es-CR") : ""}
+                    </div>
+                    <div class="history-actions">
+                        <button class="history-action" onclick="loadHistory(${index})">Cargar</button>
+                        <button class="history-action delete" onclick="deleteHistory(${index})">Eliminar</button>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function getServiceName(type) {
+        const names = {
+            gas: "Gas",
+            jumper: "Jumper",
+            llanta: "Llanta",
+            lockout: "Lockout"
+        };
+        return names[type] || "Servicio";
+    }
+
+    function escapeHTML(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function loadHistory(index) {
+        const history = getHistory();
+        const item = history[index];
+        if (!item) return;
+
+        nameInput.value = item.name || "";
+        vehicleInput.value = item.vehicle || "";
+        kmInput.value = item.km || "";
+        litrosInput.value = item.litros || "";
+        precioLitroInput.value = item.precioLitro || "";
+        nightInput.checked = Boolean(item.nightFee);
+
+        document.querySelectorAll(".service").forEach(service => {
+            if (service.dataset.service === item.serviceType) {
+                selectService(service);
+            }
+        });
+
+        calculate();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function deleteHistory(index) {
+        const history = getHistory();
+        history.splice(index, 1);
+        localStorage.setItem("carbuHistorial", JSON.stringify(history));
+        renderHistory();
+    }
+
+    function clearHistory() {
+        const history = getHistory();
+        if (history.length === 0) return;
+
+        if (confirm("¿Borrar todo el historial?")) {
+            localStorage.removeItem("carbuHistorial");
+            renderHistory();
+        }
+    }
+
+    /* WhatsApp */
+    function sendWhatsApp() {
+        const calculation = calculate();
+        const name = nameInput.value.trim();
+        const vehicle = vehicleInput.value.trim();
+
+        saveHistory({
+            date: new Date().toISOString(),
+            name,
+            vehicle,
+            km: calculation.km,
+            litros: calculation.litros,
+            precioLitro: calculation.precioLitro,
+            serviceType,
+            nightFee: calculation.nightFee,
+            fuelCost: calculation.fuelCost,
+            total: calculation.total
+        });
+
+        let message = `*Cotización Asistencia Vial*\n`;
+        if (name) message += `*Cliente:* ${name}\n`;
+        if (vehicle) message += `*Vehículo:* ${vehicle}\n`;
+        message += `*Servicio:* ${getServiceName(serviceType)}\n`;
+        message += `*Distancia:* ${calculation.km} km\n`;
+        message += `*Total:* ₡${calculation.total.toLocaleString("es-CR")}\n`;
+        message += `\n_Desglose: ${document.getElementById("breakdown").textContent}_`;
+
+        const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+        window.open(url, "_blank");
+    }
+
+    // Inicializar al cargar la página
+    renderHistory();
+    calculate();
 </script>
-
 
 </body>
 </html>
