@@ -1,0 +1,17 @@
+{
+  "name": "Asistencia Vial 50201",
+  "short_name": "Asistencia 50201",
+  "description": "Cotizador de asistencia vial CARBU",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#e31e24",
+  "icons": [
+    {
+      "src": "https://www.carbucr.com/images/logoweb.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
