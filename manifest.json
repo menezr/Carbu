@@ -8,10 +8,10 @@
   "theme_color": "#e31e24",
   "icons": [
     {
-      "src": "https://www.carbucr.com/images/icon.jpg",
+      "src": "https://www.carbucr.com/images/icon.jpg?v=2",
       "sizes": "512x512",
       "type": "image/jpeg",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }
