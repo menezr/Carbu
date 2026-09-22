@@ -8,9 +8,9 @@
   "theme_color": "#e31e24",
   "icons": [
     {
-      "src": "https://www.carbucr.com/images/logoweb.png",
+      "src": "https://www.carbucr.com/images/icon.jpeg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any"
     }
   ]
