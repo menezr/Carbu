@@ -122,6 +122,12 @@
             box-shadow: 0 0 0 3px rgba(227,30,36,.10);
         }
 
+        input.input-error {
+            border-color: #e31e24 !important;
+            background-color: #fff0f0 !important;
+            box-shadow: 0 0 0 3px rgba(227,30,36,.25) !important;
+        }
+
         /* SERVICES */
         .services {
             display: grid;
@@ -197,24 +203,37 @@
             gap: 10px;
         }
 
-        /* TOGGLE */
-        .toggle-row {
+        /* FILA DOBLE TOGGLE EN UNA MISMA LÍNEA */
+        .double-toggle-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
-            padding-top: 4px;
+            gap: 12px;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex: 1;
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            border-radius: 12px;
         }
 
         .toggle-text {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
+            color: #333;
+            white-space: nowrap;
         }
 
         .toggle {
             position: relative;
-            width: 52px;
-            height: 30px;
+            width: 44px;
+            height: 24px;
             flex-shrink: 0;
         }
 
@@ -236,13 +255,13 @@
         .slider:before {
             content: "";
             position: absolute;
-            height: 24px;
-            width: 24px;
+            height: 18px;
+            width: 18px;
             left: 3px;
             top: 3px;
             background: white;
             border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,.2);
             transition: .2s;
         }
 
@@ -251,7 +270,39 @@
         }
 
         .toggle input:checked + .slider:before {
-            transform: translateX(22px);
+            transform: translateX(20px);
+        }
+
+        /* CONDICIÓN ESPECIAL - BOTONES */
+        .condition-buttons-single-line {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .btn-option-sm {
+            flex: 1 1 0px;
+            min-width: 0;
+            border: 1px solid #d1d5db;
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 9px 4px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #333;
+            cursor: pointer;
+            transition: .18s ease;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .btn-option-sm.active {
+            border-color: #e31e24;
+            background: #fff7f7;
+            color: #e31e24;
+            font-weight: 800;
         }
 
         /* TOTAL */
@@ -472,7 +523,7 @@
 
         <!-- KILOMETROS -->
         <section class="card">
-            <div class="section-title">Kilómetros desde Nicoya</div>
+            <div class="section-title">Kilómetros desde la base</div>
 
             <div class="field">
                 <input
@@ -538,15 +589,15 @@
             </div>
         </section>
 
-        <!-- COMBUSTIBLE -->
-        <section class="card">
+        <!-- COMBUSTIBLE (Oculto por defecto, visible solo en servicio Gas) -->
+        <section class="card" id="fuelSection" style="display: none;">
 
             <div class="section-title">Combustible</div>
 
             <div class="fuel-grid">
 
                 <div class="field">
-                    <label for="litros">Litros</label>
+                    <label for="litros">Litros *</label>
                     <input
                         type="number"
                         id="litros"
@@ -557,7 +608,7 @@
                 </div>
 
                 <div class="field">
-                    <label for="precioLitro">₡ por Litro</label>
+                    <label for="precioLitro">₡ por Litro *</label>
                     <input
                         type="number"
                         id="precioLitro"
@@ -571,22 +622,39 @@
 
         </section>
 
-        <!-- NOCTURNO -->
+        <!-- AJUSTES (Condición Especial e IVA en la misma línea) -->
         <section class="card">
-
-            <div class="toggle-row">
-
-                <div class="toggle-text">
-                    Nocturno/Feriado +₡5,000
+            <div class="double-toggle-row">
+                <div class="toggle-item">
+                    <span class="toggle-text">Cond. Especial</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="enableSpecial" onchange="toggleSpecialCondition()">
+                        <span class="slider"></span>
+                    </label>
                 </div>
 
-                <label class="toggle">
-                    <input type="checkbox" id="night">
-                    <span class="slider"></span>
-                </label>
-
+                <div class="toggle-item">
+                    <span class="toggle-text">Agregar IVA (13%)</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="applyIVA">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
 
+            <div id="specialConditionOptions" style="display: none;">
+                <div class="condition-buttons-single-line">
+                    <button type="button" class="btn-option-sm active" data-val="5000" onclick="selectSpecialOption(this)">₡5,000</button>
+                    <button type="button" class="btn-option-sm" data-val="10000" onclick="selectSpecialOption(this)">₡10,000</button>
+                    <button type="button" class="btn-option-sm" data-val="15000" onclick="selectSpecialOption(this)">₡15,000</button>
+                    <button type="button" class="btn-option-sm" data-val="custom" onclick="selectSpecialOption(this)">Otro</button>
+                </div>
+
+                <div class="field" id="customConditionField" style="display: none; margin-top: 12px;">
+                    <label for="customCondition">Monto Personalizado</label>
+                    <input type="text" id="customCondition" inputmode="numeric" placeholder="₡0" oninput="formatCustomCurrency(this)">
+                </div>
+            </div>
         </section>
 
         <!-- TOTAL -->
@@ -642,18 +710,41 @@
     const BASE = 5000;
     const KM_BASE = 5;
     const KM_PRICE = 550;
-    const NIGHT_FEE = 5000;
 
     let serviceFee = 7000;
     let serviceType = "jumper";
+    let selectedSpecialValue = "5000";
 
     const kmInput = document.getElementById("km");
     const litrosInput = document.getElementById("litros");
     const precioLitroInput = document.getElementById("precioLitro");
-    const nightInput = document.getElementById("night");
+    const fuelSection = document.getElementById("fuelSection");
+    
+    const enableSpecial = document.getElementById("enableSpecial");
+    const specialConditionOptions = document.getElementById("specialConditionOptions");
+    const customConditionField = document.getElementById("customConditionField");
+    const customConditionInput = document.getElementById("customCondition");
+    const applyIVAInput = document.getElementById("applyIVA");
 
     const nameInput = document.getElementById("name");
     const vehicleInput = document.getElementById("vehicle");
+
+    /* Formatear Moneda Personalizada */
+    function formatCustomCurrency(input) {
+        let raw = input.value.replace(/\D/g, "");
+        if (raw === "") {
+            input.value = "";
+        } else {
+            let num = parseInt(raw, 10);
+            input.value = "₡" + num.toLocaleString("es-CR");
+        }
+        calculate();
+    }
+
+    function getCustomNumericValue() {
+        let raw = customConditionInput.value.replace(/\D/g, "");
+        return raw ? parseInt(raw, 10) : 0;
+    }
 
     /* Selección de servicio */
     function selectService(element) {
@@ -665,6 +756,45 @@
 
         serviceFee = Number(element.dataset.price);
         serviceType = element.dataset.service;
+
+        if (serviceType === "gas") {
+            fuelSection.style.display = "block";
+        } else {
+            fuelSection.style.display = "none";
+            litrosInput.value = "";
+            precioLitroInput.value = "";
+            clearFuelErrors();
+        }
+
+        calculate();
+    }
+
+    /* Mostrar / Ocultar Condición Especial */
+    function toggleSpecialCondition() {
+        if (enableSpecial.checked) {
+            specialConditionOptions.style.display = "block";
+        } else {
+            specialConditionOptions.style.display = "none";
+        }
+        calculate();
+    }
+
+    /* Selección de botón de Condición Especial */
+    function selectSpecialOption(btnElement) {
+        document.querySelectorAll(".condition-buttons-single-line .btn-option-sm").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        btnElement.classList.add("active");
+        selectedSpecialValue = btnElement.dataset.val;
+
+        if (selectedSpecialValue === "custom") {
+            customConditionField.style.display = "block";
+            customConditionInput.focus();
+        } else {
+            customConditionField.style.display = "none";
+            customConditionInput.value = "";
+        }
 
         calculate();
     }
@@ -684,29 +814,48 @@
         const precioLitro = Math.max(0, Number(precioLitroInput.value) || 0);
 
         const kmCost = calculateKm(km);
-        const fuelCost = litros * precioLitro;
-        const nightFee = nightInput.checked ? NIGHT_FEE : 0;
+        const fuelCost = (serviceType === "gas") ? (litros * precioLitro) : 0;
 
-        const total = kmCost + serviceFee + nightFee + fuelCost;
-
-        document.getElementById("total").textContent = "₡" + total.toLocaleString("es-CR");
-
-        let breakdown = "Base/KM " + kmCost.toLocaleString("es-CR") + " + Servicio " + serviceFee.toLocaleString("es-CR");
-
-        if (km > 0) {
-            if (km <= KM_BASE) {
-                breakdown = "Base " + kmCost.toLocaleString("es-CR") + " + Servicio " + serviceFee.toLocaleString("es-CR");
+        let specialFee = 0;
+        if (enableSpecial.checked) {
+            if (selectedSpecialValue === "custom") {
+                specialFee = getCustomNumericValue();
             } else {
-                breakdown = "KM " + km + " × ₡550 = " + kmCost.toLocaleString("es-CR") + " + Servicio " + serviceFee.toLocaleString("es-CR");
+                specialFee = Number(selectedSpecialValue) || 0;
             }
         }
 
-        if (nightFee > 0) {
-            breakdown += " + Nocturno " + nightFee.toLocaleString("es-CR");
+        const subtotalServicios = kmCost + serviceFee + specialFee;
+        
+        let ivaCost = 0;
+        if (applyIVAInput.checked) {
+            ivaCost = subtotalServicios * 0.13;
+        }
+
+        const total = subtotalServicios + ivaCost + fuelCost;
+
+        document.getElementById("total").textContent = "₡" + Math.round(total).toLocaleString("es-CR");
+
+        let breakdown = "Base/KM ₡" + kmCost.toLocaleString("es-CR") + " + Servicio ₡" + serviceFee.toLocaleString("es-CR");
+
+        if (km > 0) {
+            if (km <= KM_BASE) {
+                breakdown = "Base ₡" + kmCost.toLocaleString("es-CR") + " + Servicio ₡" + serviceFee.toLocaleString("es-CR");
+            } else {
+                breakdown = "KM " + km + " × ₡550 = ₡" + kmCost.toLocaleString("es-CR") + " + Servicio ₡" + serviceFee.toLocaleString("es-CR");
+            }
+        }
+
+        if (specialFee > 0) {
+            breakdown += " + Cond. Especial ₡" + specialFee.toLocaleString("es-CR");
+        }
+
+        if (ivaCost > 0) {
+            breakdown += " + IVA (13%) ₡" + Math.round(ivaCost).toLocaleString("es-CR");
         }
 
         if (fuelCost > 0) {
-            breakdown += " + Combustible " + fuelCost.toLocaleString("es-CR");
+            breakdown += " + Combustible ₡" + fuelCost.toLocaleString("es-CR");
         }
 
         document.getElementById("breakdown").textContent = breakdown;
@@ -717,18 +866,26 @@
             litros,
             precioLitro,
             fuelCost,
-            nightFee,
-            total
+            specialFee,
+            ivaCost,
+            total: Math.round(total)
         };
     }
 
-    /* Escuchar cambios */
+    function clearFuelErrors() {
+        litrosInput.classList.remove("input-error");
+        precioLitroInput.classList.remove("input-error");
+    }
+
     [kmInput, litrosInput, precioLitroInput].forEach(input => {
-        input.addEventListener("input", calculate);
+        input.addEventListener("input", () => {
+            clearFuelErrors();
+            calculate();
+        });
         input.addEventListener("change", calculate);
     });
 
-    nightInput.addEventListener("change", calculate);
+    applyIVAInput.addEventListener("change", calculate);
     nameInput.addEventListener("input", calculate);
     vehicleInput.addEventListener("input", calculate);
 
@@ -775,7 +932,8 @@
                     <div class="history-details">
                         ${dateText}<br>
                         ${item.km} km · ${getServiceName(item.serviceType)}
-                        ${item.nightFee > 0 ? " · Nocturno/Feriado" : ""}
+                        ${item.specialFee > 0 ? " · Cond. Especial ₡" + Number(item.specialFee).toLocaleString("es-CR") : ""}
+                        ${item.ivaCost > 0 ? " · IVA ₡" + Math.round(item.ivaCost).toLocaleString("es-CR") : ""}
                         ${item.fuelCost > 0 ? " · Combustible ₡" + Number(item.fuelCost).toLocaleString("es-CR") : ""}
                     </div>
                     <div class="history-actions">
@@ -789,12 +947,12 @@
 
     function getServiceName(type) {
         const names = {
-            gas: "Gas",
-            jumper: "Jumper",
-            llanta: "Llanta",
-            lockout: "Lockout"
+            gas: "Suministro de Gasolina",
+            jumper: "Paso de Corriente",
+            llanta: "Cambio de Llanta",
+            lockout: "Apertura de Vehículo (Lockout)"
         };
-        return names[type] || "Servicio";
+        return names[type] || "Asistencia Vial";
     }
 
     function escapeHTML(value) {
@@ -816,7 +974,29 @@
         kmInput.value = item.km || "";
         litrosInput.value = item.litros || "";
         precioLitroInput.value = item.precioLitro || "";
-        nightInput.checked = Boolean(item.nightFee);
+        applyIVAInput.checked = Boolean(item.ivaCost);
+
+        if (item.specialFee > 0) {
+            enableSpecial.checked = true;
+            specialConditionOptions.style.display = "block";
+
+            if ([5000, 10000, 15000].includes(item.specialFee)) {
+                selectedSpecialValue = String(item.specialFee);
+                customConditionField.style.display = "none";
+                customConditionInput.value = "";
+            } else {
+                selectedSpecialValue = "custom";
+                customConditionField.style.display = "block";
+                customConditionInput.value = "₡" + Number(item.specialFee).toLocaleString("es-CR");
+            }
+
+            document.querySelectorAll(".condition-buttons-single-line .btn-option-sm").forEach(btn => {
+                btn.classList.toggle("active", btn.dataset.val === selectedSpecialValue);
+            });
+        } else {
+            enableSpecial.checked = false;
+            specialConditionOptions.style.display = "none";
+        }
 
         document.querySelectorAll(".service").forEach(service => {
             if (service.dataset.service === item.serviceType) {
@@ -845,38 +1025,67 @@
         }
     }
 
-    /* WhatsApp */
+    /* Mensaje de WhatsApp directo para emergencias */
     function sendWhatsApp() {
+        let hasError = false;
+
+        if (serviceType === "gas") {
+            const l = Number(litrosInput.value);
+            const p = Number(precioLitroInput.value);
+
+            clearFuelErrors();
+
+            if (!l || l <= 0) {
+                litrosInput.classList.add("input-error");
+                hasError = true;
+            }
+
+            if (!p || p <= 0) {
+                precioLitroInput.classList.add("input-error");
+                hasError = true;
+            }
+
+            if (hasError) {
+                if (!l || l <= 0) {
+                    litrosInput.focus();
+                } else {
+                    precioLitroInput.focus();
+                }
+                return;
+            }
+        }
+
         const calculation = calculate();
-        const name = nameInput.value.trim();
-        const vehicle = vehicleInput.value.trim();
+        const name = nameInput.value.trim() || "Estimado cliente";
+        const vehicle = vehicleInput.value.trim() || "su vehículo";
+        const serviceName = getServiceName(serviceType);
 
         saveHistory({
             date: new Date().toISOString(),
-            name,
-            vehicle,
+            name: nameInput.value.trim(),
+            vehicle: vehicleInput.value.trim(),
             km: calculation.km,
             litros: calculation.litros,
             precioLitro: calculation.precioLitro,
             serviceType,
-            nightFee: calculation.nightFee,
+            specialFee: calculation.specialFee,
+            ivaCost: calculation.ivaCost,
             fuelCost: calculation.fuelCost,
             total: calculation.total
         });
 
-        let message = `*Cotización Asistencia Vial*\n`;
-        if (name) message += `*Cliente:* ${name}\n`;
-        if (vehicle) message += `*Vehículo:* ${vehicle}\n`;
-        message += `*Servicio:* ${getServiceName(serviceType)}\n`;
-        message += `*Distancia:* ${calculation.km} km\n`;
-        message += `*Total:* ₡${calculation.total.toLocaleString("es-CR")}\n`;
-        message += `\n_Desglose: ${document.getElementById("breakdown").textContent}_`;
+        const ivaLabel = calculation.ivaCost > 0 ? "IVA incluido" : "+ IVA si requiere factura";
+
+        let message = `🚨 *CARBU | Asistencia Vial*\n\n`;
+        message += `Hola ${name}, podemos atender su vehículo ${vehicle} por ${serviceName}.\n\n`;
+        message += `💰 *Costo total:* ₡${calculation.total.toLocaleString("es-CR")}\n`;
+        message += `[${ivaLabel}]\n\n`;
+        message += `Si está de acuerdo con el costo, confírmenos y coordinamos la asistencia.`;
 
         const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
     }
 
-    // Inicializar al cargar la página
     renderHistory();
     calculate();
 </script>
