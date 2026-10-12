@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e31e24">
+  <title>Generador de cotizaciones | CARBU</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+    :root {
+      --red: #e31e24;
+      --red-dark: #bd171c;
+      --ink: #202124;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --bg: #f3f4f6;
+      --white: #fff;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Montserrat", Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+    }
+    .wrap { width: min(100% - 24px, 760px); margin: 24px auto 40px; }
+    
+    /* HEADER */
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 4px 20px;
+    }
+    .logo {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      object-position: center;
+      flex: 0 0 90px;
+      display: block;
+      aspect-ratio: 1 / 1;
+      background: #fff;
+      border-radius: 16px;
+      padding: 6px;
+      border: 1px solid var(--line);
+    }
+    .brand-title {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .brand-sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 600;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 14px rgba(20, 20, 20, .045);
+    }
+    h2 { margin: 0 0 16px; font-size: 1.05rem; }
+    .section-title { display: flex; align-items: center; gap: 9px; }
+    .section-title .dot {
+      display: inline-grid; place-items: center; width: 28px; height: 28px;
+      background: #fff0f0; color: var(--red); border-radius: 9px; font-weight: 800;
+    }
+
+    /* GRID & INPUTS */
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .field { min-width: 0; }
+    .full { grid-column: 1 / -1; }
+    label { display: block; font-size: .85rem; font-weight: 700; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; min-width: 0; border: 1px solid #d1d5db; border-radius: 10px;
+      padding: 11px 12px; background: #fff; color: var(--ink); font: inherit; outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--red); box-shadow: 0 0 0 3px rgba(227, 30, 36, .11);
+    }
+    textarea { resize: vertical; min-height: 82px; }
+    .hint { color: var(--muted); font-size: .78rem; margin-top: 5px; }
+
+    /* TABLA DINÁMICA DE ÍTEMS */
+    .items-head, .item-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 95px 130px 36px;
+      gap: 8px;
+      align-items: center;
+    }
+    .items-head { font-size: .75rem; color: var(--muted); font-weight: 700; padding: 0 2px 7px; }
+    .item-row { margin-bottom: 9px; }
+    .item-row input { padding: 10px 9px; }
+    .item-row .qty, .item-row .price { text-align: right; }
+    .remove {
+      border: 0; border-radius: 9px; background: #f3f4f6; color: #6b7280;
+      height: 39px; font-size: 1.2rem; cursor: pointer;
+    }
+    .remove:hover { background: #fee2e2; color: var(--red); }
+    .add-btn {
+      background: #fff; border: 1px dashed #f0a0a2; color: var(--red);
+      border-radius: 10px; padding: 10px 13px; font-weight: 700; cursor: pointer; width: 100%;
+    }
+
+    /* TOTALES */
+    .totals { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 13px; }
+    .total-line { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; }
+    .total-line span:first-child { color: var(--muted); }
+    .total-line.grand { border-top: 1px solid var(--line); margin-top: 7px; padding-top: 13px; font-size: 1.2rem; font-weight: 800; }
+    .total-line.grand strong { color: var(--red); }
+    .checks { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
+    .check { display: flex; gap: 8px; align-items: center; font-size: .9rem; }
+    .check input { width: auto; accent-color: var(--red); }
+
+    /* ACCIONES */
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    button.primary, button.secondary {
+      border-radius: 12px; padding: 14px 16px; font: inherit; font-weight: 800; cursor: pointer;
+    }
+    button.primary { background: var(--red); color: #fff; border: 1px solid var(--red); }
+    button.primary:hover { background: var(--red-dark); }
+    button.secondary { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .footnote { color: var(--muted); text-align: center; font-size: .78rem; margin: 18px 8px 0; }
+    .error { color: var(--red); font-size: .85rem; margin-top: 10px; display: none; }
+
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 16px, 760px); margin-top: 12px; }
+      .card { padding: 16px; border-radius: 14px; }
+      .grid { grid-template-columns: 1fr; gap: 12px; }
+      .full { grid-column: auto; }
+      .items-head { display: none; }
+      .item-row { grid-template-columns: minmax(0, 1fr) 64px 36px; gap: 7px; }
+      .item-row .desc { grid-column: 1 / -1; }
+      .item-row .qty { grid-column: 1; }
+      .item-row .price { grid-column: 2; }
+      .item-row .remove { grid-column: 3; grid-row: 2; }
+      .actions { grid-template-columns: 1fr; }
+      .logo { width: 75px; height: 75px; flex-basis: 75px; }
+      .brand-title { font-size: 1.15rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="top">
+      <img class="logo" id="brandLogo" src="https://www.carbucr.com/images/icon.jpeg" alt="Logo CARBU"
+           onerror="this.onerror=null;this.src='https://www.carbucr.com/images/logoweb.png';">
+      <div>
+        <h1 class="brand-title">Carlos Jiménez Salas</h1>
+        <p class="brand-sub">Cédula 6-0156-0943</p>
+        <p class="brand-sub" style="font-size: .82rem;">Generador de cotizaciones | CARBU</p>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2 class="section-title"><span class="dot">1</span> Datos de la cotización</h2>
+      <div class="grid">
+        <div class="field">
+          <label for="quoteDate">Fecha</label>
+          <input id="quoteDate" type="date">
+        </div>
+        <div class="field">
+          <label for="validDays">Válida por (días)</label>
+          <input id="validDays" type="number" min="1" value="7">
+        </div>
+        <div class="field">
+          <label for="quoteNumber">Número de cotización</label>
+          <input id="quoteNumber" type="text">
+        </div>
+        <div class="field">
+          <label for="currency">Moneda</label>
+          <select id="currency">
+            <option value="CRC">Colones (CRC)</option>
+            <option value="USD">Dólares (US$)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title"><span class="dot">2</span> Datos del cliente</h2>
+      <div class="grid">
+        <div class="field">
+          <label for="clientName">Nombre del cliente</label>
+          <input id="clientName" placeholder="Nombre o empresa">
+        </div>
+        <div class="field">
+          <label for="clientPhone">Teléfono</label>
+          <input id="clientPhone" type="tel" placeholder="8888-8888">
+        </div>
+        <div class="field full">
+          <label for="serviceTitle">Servicio cotizado</label>
+          <input id="serviceTitle" placeholder="Ej. Traslado de vehículo en plataforma">
+        </div>
+        <div class="field">
+          <label for="origin">Origen</label>
+          <input id="origin" placeholder="Lugar de recogida">
+        </div>
+        <div class="field">
+          <label for="destination">Destino</label>
+          <input id="destination" placeholder="Lugar de entrega">
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title"><span class="dot">3</span> Detalle y precios</h2>
+      <div class="items-head"><span>Descripción</span><span>Cantidad</span><span>Precio unitario</span><span></span></div>
+      <div id="items"></div>
+      <button class="add-btn" id="addItem" type="button">＋ Agregar línea</button>
+
+      <div class="totals">
+        <div class="grid" style="align-items:end">
+          <div class="field">
+            <label for="taxRate">IVA (%)</label>
+            <input id="taxRate" type="number" min="0" max="100" step="0.01" value="13">
+            <div class="hint">Ajustá el porcentaje si corresponde.</div>
+          </div>
+          <div class="field">
+            <div class="checks">
+              <label class="check"><input id="applyTax" type="checkbox" checked> Incluir IVA</label>
+            </div>
+          </div>
+        </div>
+        <div class="total-line"><span>Subtotal</span><strong id="subtotalText">CRC 0,00</strong></div>
+        <div class="total-line"><span id="taxLabel">IVA (13%)</span><strong id="taxText">CRC 0,00</strong></div>
+        <div class="total-line grand"><span>Total cotizado</span><strong id="grandText">CRC 0,00</strong></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title"><span class="dot">4</span> Condiciones y observaciones</h2>
+      <div class="grid">
+        <div class="field full">
+          <label for="notes">Observaciones / condiciones</label>
+          <textarea id="notes" placeholder="Ej. Cotización sujeta a las condiciones de acceso y carga indicadas. Servicios adicionales se cotizan por separado."></textarea>
+        </div>
+        <div class="field full">
+          <label for="contactInfo">Contacto de CARBU (opcional)</label>
+          <input id="contactInfo" placeholder="Teléfono, WhatsApp o correo">
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="actions">
+        <button class="primary" id="makePdf" type="button">Descargar cotización PDF</button>
+        <button class="secondary" id="resetForm" type="button">Limpiar formulario</button>
+      </div>
+      <p class="error" id="errorMessage" role="alert"></p>
+      <p class="hint" style="margin-top:12px">El PDF se genera en este dispositivo. Revisá los datos y el impuesto antes de enviarlo al cliente.</p>
+    </section>
+
+    <p class="footnote">Carlos Jiménez Salas · Cédula 6-0156-0943</p>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    
+    const money = (n) => {
+      const curr = $('currency') ?$('currency').value : 'CRC';
+      const numFormatted = new Intl.NumberFormat('es-CR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(n) || 0);
+      return curr === 'CRC' ? 'CRC ' + numFormatted : 'US$ ' + numFormatted;
+    };
+
+    function makeItem(description = '', quantity = 1, price = '') {
+      const itemsEl = $('items');
+      if (!itemsEl) return;
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <input class="desc" type="text" aria-label="Descripción" placeholder="Descripción del servicio" value="">
+        <input class="qty" type="number" aria-label="Cantidad" min="0" step="0.01" value="">
+        <input class="price" type="number" aria-label="Precio unitario" min="0" step="0.01" placeholder="0.00" value="">
+        <button class="remove" type="button" aria-label="Eliminar línea" title="Eliminar línea">×</button>`;
+      row.querySelector('.desc').value = description;
+      row.querySelector('.qty').value = quantity;
+      row.querySelector('.price').value = price;
+      row.querySelectorAll('input').forEach(input => input.addEventListener('input', updateTotals));
+      row.querySelector('.remove').addEventListener('click', () => {
+        if (itemsEl.children.length > 1) {
+          row.remove();
+        } else {
+          row.querySelector('.desc').value = '';
+          row.querySelector('.qty').value = 1;
+          row.querySelector('.price').value = '';
+        }
+        updateTotals();
+      });
+      itemsEl.appendChild(row);
+      updateTotals();
+    }
+
+    function getItems() {
+      const itemsEl = $('items');
+      if (!itemsEl) return [];
+      return [...itemsEl.querySelectorAll('.item-row')].map(row => ({
+        description: row.querySelector('.desc').value.trim(),
+        quantity: Math.max(0, Number(row.querySelector('.qty').value) || 0),
+        price: Math.max(0, Number(row.querySelector('.price').value) || 0)
+      })).filter(item => item.description || item.price > 0);
+    }
+
+    function totals() {
+      const itemsEl = $('items');
+      const subtotal = itemsEl ? [...itemsEl.querySelectorAll('.item-row')].reduce((sum, row) => {
+        const q = Math.max(0, Number(row.querySelector('.qty').value) || 0);
+        const p = Math.max(0, Number(row.querySelector('.price').value) || 0);
+        return sum + q * p;
+      }, 0) : 0;
+      const rate = Math.max(0, Number($('taxRate').value) || 0);
+      const tax = $('applyTax').checked ? subtotal * rate / 100 : 0;
+      return { subtotal, rate, tax, grand: subtotal + tax };
+    }
+
+    function updateTotals() {
+      const t = totals();
+      if ($('subtotalText'))$('subtotalText').textContent = money(t.subtotal);
+      if ($('taxText'))$('taxText').textContent = money(t.tax);
+      if ($('taxLabel')) $('taxLabel').textContent =$('applyTax').checked ? `IVA (${t.rate}%)` : 'IVA (no aplicado)';
+      if ($('grandText'))$('grandText').textContent = money(t.grand);
+    }
+
+    function safeText(value, fallback = '—') {
+      const text = String(value ?? '').trim();
+      return text || fallback;
+    }
+
+    function formatDate(dateValue) {
+      if (!dateValue) return '—';
+      const [y, m, d] = dateValue.split('-').map(Number);
+      return new Date(y, m - 1, d).toLocaleDateString('es-CR', {year:'numeric', month:'long', day:'numeric'});
+    }
+
+    function loadLogoData(url) {
+      return new Promise(resolve => {
+        if (!url) { resolve(null); return; }
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth || 300;
+            canvas.height = img.naturalHeight || 300;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            resolve({ data: canvas.toDataURL('image/png'), format: 'PNG', width: canvas.width, height: canvas.height });
+          } catch (e) { resolve(null); }
+        };
+        img.onerror = () => resolve(null);
+        img.src = url;
+      });
+    }
+
+    async function generatePdf() {
+      const error = $('errorMessage');
+      if (error) error.style.display = 'none';
+
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        if (error) {
+          error.textContent = 'No se pudo cargar la librería PDF. Verificá tu conexión a internet.';
+          error.style.display = 'block';
+        }
+        return;
+      }
+
+      const client = $('clientName').value.trim();
+      const service = $('serviceTitle').value.trim();
+      const items = getItems();
+
+      if (!client) {
+        if (error) {
+          error.textContent = 'Ingresá el nombre del cliente antes de generar el PDF.';
+          error.style.display = 'block';
+        }
+        $('clientName').focus();
+        return;
+      }
+
+      if (!service && !items.length) {
+        if (error) {
+          error.textContent = 'Ingresá el servicio cotizado o completá al menos una línea de detalle.';
+          error.style.display = 'block';
+        }
+        $('serviceTitle').focus();
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const pageW = 210, margin = 17, contentW = pageW - margin * 2;
+      const red = [227, 30, 36], dark = [32, 33, 36], muted = [105, 112, 122], pale = [255, 242, 242];
+      const quoteNo = safeText($('quoteNumber').value, 'CARBU-' + new Date().getFullYear());
+      const dateText = formatDate($('quoteDate').value);
+      const validDays = Math.max(1, Number($('validDays').value) || 7);
+      const t = totals();
+      let y = 14;
+
+      doc.setFillColor(...red);
+      doc.rect(0, 0, pageW, 5, 'F');
+
+      // LOGO MUCHO MÁS GRANDE EN EL PDF (50x50 mm) PARA COMPETIR CON EL BLOQUE DERECHO
+      const logoImg = $('brandLogo');
+      const logoUrl = logoImg ? (logoImg.currentSrc || logoImg.src) : '';
+      const logoData = await loadLogoData(logoUrl);
+      let logoWidth = 50, logoHeight = 50;
+
+      if (logoData) {
+        try {
+          const ratio = (logoData.width || 1) / (logoData.height || 1);
+          logoWidth = 50;
+          logoHeight = logoWidth / ratio;
+          if (logoHeight > 50) { logoHeight = 50; logoWidth = logoHeight * ratio; }
+          doc.addImage(logoData.data, logoData.format, margin, y, logoWidth, logoHeight, undefined, 'FAST');
+        } catch (e) { }
+      }
+
+      // Bloque de cotización a la derecha alineado con la altura del logo
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.setTextColor(...red);
+      doc.text('COTIZACIÓN', pageW - margin, y + 8, { align: 'right' });
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(...dark);
+      doc.text('N.º ' + quoteNo, pageW - margin, y + 16, { align: 'right' });
+      doc.text(dateText, pageW - margin, y + 22, { align: 'right' });
+
+      y += Math.max(logoHeight, 26) + 6;
+      doc.setDrawColor(230, 232, 235); doc.line(margin, y, pageW - margin, y); y += 10;
+
+      doc.setFillColor(...pale); doc.roundedRect(margin, y, contentW, 29, 3, 3, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(...red);
+      doc.text('PREPARADA PARA', margin + 5, y + 7);
+      doc.text('SERVICIO', margin + contentW / 2 + 3, y + 7);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(...dark);
+      doc.text(doc.splitTextToSize(client, contentW / 2 - 12), margin + 5, y + 14);
+      doc.text(doc.splitTextToSize(safeText(service, 'Servicio cotizado'), contentW / 2 - 12), margin + contentW / 2 + 3, y + 14);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(...muted);
+      doc.text('Tel.: ' + safeText($('clientPhone').value), margin + 5, y + 23);
+      y += 38;
+
+      const origin = $('origin').value.trim(), destination =$('destination').value.trim();
+      if (origin || destination) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(...dark);
+        doc.text('ORIGEN', margin, y);
+        doc.text('DESTINO', margin + contentW / 2 + 3, y);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+        doc.text(doc.splitTextToSize(safeText(origin), contentW / 2 - 8), margin, y + 6);
+        doc.text(doc.splitTextToSize(safeText(destination), contentW / 2 - 8), margin + contentW / 2 + 3, y + 6);
+        y += 18;
+      }
+
+      const rows = items.length ? items : [{ description: service, quantity: 1, price: t.subtotal }];
+      const col = { desc: margin + 3, qty: 125, price: 152, total: pageW - margin - 3 };
+      
+      doc.setFillColor(...red); doc.roundedRect(margin, y, contentW, 9, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(255,255,255);
+      doc.text('DESCRIPCIÓN', col.desc, y + 6);
+      doc.text('CANT.', col.qty, y + 6, {align:'right'});
+      doc.text('PRECIO UNIT.', col.price, y + 6, {align:'right'});
+      doc.text('TOTAL', col.total, y + 6, {align:'right'});
+      y += 13;
+      
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(...dark);
+      rows.forEach((item, index) => {
+        const descLines = doc.splitTextToSize(safeText(item.description, 'Servicio'), 85);
+        const rowH = Math.max(9, descLines.length * 4.5 + 3);
+        if (y + rowH > 258) { doc.addPage(); y = 20; }
+        if (index % 2 === 0) { doc.setFillColor(248,249,250); doc.rect(margin, y - 4, contentW, rowH, 'F'); }
+        doc.text(descLines, col.desc, y);
+        doc.text(String(item.quantity), col.qty, y, {align:'right'});
+        doc.text(money(item.price), col.price, y, {align:'right'});
+        doc.text(money(item.quantity * item.price), col.total, y, {align:'right'});
+        y += rowH;
+      });
+      y += 7;
+
+      const totalsX = 116, valueX = pageW - margin;
+      const totalRows = [
+        ['Subtotal', money(t.subtotal)],
+        [ $('applyTax').checked ? `IVA (${t.rate}%)` : 'IVA no aplicado', money(t.tax) ]
+      ];
+      doc.setDrawColor(230,232,235); doc.line(totalsX, y, valueX, y); y += 7;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...muted);
+      totalRows.forEach(([label, val]) => {
+        doc.text(label, totalsX, y); doc.text(val, valueX, y, {align:'right'}); y += 7;
+      });
+      doc.setFillColor(...pale); doc.roundedRect(totalsX - 4, y - 3, valueX - totalsX + 4, 14, 2, 2, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(...red);
+      doc.text('TOTAL', totalsX, y + 6);
+      doc.text(money(t.grand), valueX, y + 6, {align:'right'});
+      y += 23;
+
+      if (y > 245) { doc.addPage(); y = 20; }
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(...dark);
+      doc.text('VALIDEZ DE LA COTIZACIÓN', margin, y);
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(...muted); doc.setFontSize(9);
+      doc.text(`${validDays} días a partir de la fecha de emisión.`, margin, y + 6);
+      y += 15;
+      
+      const notes = $('notes').value.trim();
+      if (notes) {
+        doc.setFont('helvetica', 'bold'); doc.setTextColor(...dark);
+        doc.text('OBSERVACIONES Y CONDICIONES', margin, y); y += 6;
+        doc.setFont('helvetica', 'normal'); doc.setTextColor(...muted);
+        const noteLines = doc.splitTextToSize(notes, contentW);
+        for (const line of noteLines) {
+          if (y > 270) { doc.addPage(); y = 20; }
+          doc.text(line, margin, y); y += 4.5;
+        }
+      }
+      
+      const contact = $('contactInfo').value.trim();
+      if (contact) {
+        y += 4;
+        doc.setFont('helvetica', 'bold'); doc.setTextColor(...dark); doc.text('CONTACTO', margin, y); y += 5;
+        doc.setFont('helvetica', 'normal'); doc.setTextColor(...muted);
+        doc.text(doc.splitTextToSize(contact, contentW), margin, y);
+      }
+
+      // Pie de página oficial con Nombre, Cédula y www.carbucr.com
+      const pageCount = doc.getNumberOfPages();
+      for (let p = 1; p <= pageCount; p++) {
+        doc.setPage(p);
+        doc.setDrawColor(230,232,235); doc.line(margin, 282, pageW - margin, 282);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...muted);
+        doc.text('Carlos Jiménez Salas · Cédula 6-0156-0943 · www.carbucr.com', margin, 289);
+        doc.text(`Página ${p} de ${pageCount}`, pageW - margin, 289, {align:'right'});
+      }
+      const filename = ('Cotizacion-CARBU-' + quoteNo).replace(/[^a-z0-9_-]/gi, '_') + '.pdf';
+      doc.save(filename);
+    }
+
+    function resetForm() {
+      if (!confirm('¿Querés limpiar todos los campos de la cotización?')) return;
+      $('clientName').value = '';$('clientPhone').value = '';
+      $('serviceTitle').value = '';$('origin').value = '';
+      $('destination').value = '';$('notes').value = '';
+      $('contactInfo').value = '';$('validDays').value = 7;
+      $('currency').value = 'CRC';$('taxRate').value = 13;
+      $('applyTax').checked = true;
+      const today = new Date();
+      $('quoteDate').value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+      $('quoteNumber').value = 'CARBU-' + today.getFullYear() + '-' + String(Date.now()).slice(-5);$('items').innerHTML = '';
+      makeItem('Servicio de grúa', 1, '');
+      updateTotals();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      $('addItem').addEventListener('click', () => makeItem('', 1, ''));$('makePdf').addEventListener('click', generatePdf);
+      $('resetForm').addEventListener('click', resetForm);$('currency').addEventListener('change', updateTotals);
+      $('taxRate').addEventListener('input', updateTotals);$('applyTax').addEventListener('change', updateTotals);
+
+      const today = new Date();
+      $('quoteDate').value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+      $('quoteNumber').value = 'CARBU-' + today.getFullYear() + '-' + String(Date.now()).slice(-5);
+      
+      makeItem('Servicio de grúa', 1, '');
+    });
+  </script>
+</body>
+</html>
