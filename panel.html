@@ -4,31 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#e31e24">
-
-<!-- Icono del navegador -->
-<link rel="icon" type="image/png" href="https://www.carbucr.com/images/badge.png">
-
-<!-- Icono para pantalla de inicio -->
-<link rel="apple-touch-icon" href="https://www.carbucr.com/images/badge.png">
-
-<!-- Aplicación web -->
-<link rel="manifest" href="/manifest.json">
-
-<title>Asistencia Vial 50201</title>
-
+    <!-- Icono del navegador -->
+    <link rel="icon" type="image/png" href="https://www.carbucr.com/images/badge.png">
+    <!-- Icono para pantalla de inicio -->
+    <link rel="apple-touch-icon" href="https://www.carbucr.com/images/badge.png">
+    <!-- Aplicación web -->
+    <link rel="manifest" href="/manifest.json">
+    <title>Asistencia Vial 50201 | CARBU</title>
+    <!-- jsPDF para el generador de Proformas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background: #f3f4f6;
             color: #202124;
         }
-
         .app {
             width: 100%;
             max-width: 560px;
@@ -37,48 +29,106 @@
             background: #f3f4f6;
             padding-bottom: 30px;
         }
-
         /* HEADER */
         .header {
             background: #ffffff;
-            padding: 22px 20px 18px;
+            padding: 18px 20px;
             border-bottom: 1px solid #e5e7eb;
             position: sticky;
             top: 0;
             z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-
         .header-content {
             display: flex;
             align-items: center;
             gap: 14px;
         }
-
         .logo {
             width: 54px;
             height: 54px;
             object-fit: contain;
             flex-shrink: 0;
         }
-
         .header-text h1 {
             margin: 0;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             color: #202124;
         }
-
         .header-text p {
-            margin: 4px 0 0;
-            font-size: 13px;
+            margin: 2px 0 0;
+            font-size: 12px;
             color: #777;
+        }
+
+        /* MENÚ DE HAMBURGUESA */
+        .menu-container {
+            position: relative;
+        }
+        .menu-btn {
+            background: #f3f4f6;
+            border: 1px solid #d9dce1;
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: #202124;
+        }
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 52px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.12);
+            width: 170px;
+            overflow: hidden;
+            z-index: 100;
+        }
+        .menu-dropdown.show {
+            display: block;
+        }
+        .menu-item {
+            width: 100%;
+            padding: 12px 16px;
+            text-align: left;
+            background: none;
+            border: 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .menu-item:last-child {
+            border-bottom: 0;
+        }
+        .menu-item:hover, .menu-item.active {
+            background: #fff0f0;
+            color: #e31e24;
+        }
+
+        /* VISTAS */
+        .view-section {
+            display: none;
+        }
+        .view-section.active {
+            display: block;
         }
 
         /* CONTENT */
         .content {
             padding: 18px;
         }
-
         .card {
             background: #ffffff;
             border-radius: 18px;
@@ -87,23 +137,19 @@
             box-shadow: 0 4px 18px rgba(0,0,0,.06);
             border: 1px solid #e8e8e8;
         }
-
         .section-title {
             font-size: 14px;
             font-weight: 800;
             margin-bottom: 13px;
             color: #252525;
         }
-
         /* INPUTS */
         .field {
             margin-bottom: 13px;
         }
-
         .field:last-child {
             margin-bottom: 0;
         }
-
         .field label {
             display: block;
             font-size: 12px;
@@ -111,39 +157,41 @@
             color: #666;
             margin-bottom: 6px;
         }
-
-        input {
+        input, select, textarea {
             width: 100%;
             height: 48px;
             border: 1px solid #d9dce1;
             border-radius: 12px;
             padding: 0 14px;
-            font-size: 16px;
+            font-size: 15px;
             outline: none;
             background: #fafafa;
             color: #202124;
             transition: .2s;
+            font-family: inherit;
         }
-
-        input:focus {
+        textarea {
+            height: auto;
+            padding: 12px 14px;
+            resize: vertical;
+            min-height: 75px;
+        }
+        input:focus, select:focus, textarea:focus {
             border-color: #e31e24;
             background: #fff;
             box-shadow: 0 0 0 3px rgba(227,30,36,.10);
         }
-
         input.input-error {
             border-color: #e31e24 !important;
             background-color: #fff0f0 !important;
             box-shadow: 0 0 0 3px rgba(227,30,36,.25) !important;
         }
-
         /* SERVICES */
         .services {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
         }
-
         .service {
             position: relative;
             border: 2px solid #e7e7e7;
@@ -155,17 +203,14 @@
             text-align: center;
             transition: .18s ease;
         }
-
         .service:hover {
             border-color: #f0a0a2;
         }
-
         .service.active {
             border-color: #e31e24;
             background: #fff7f7;
             box-shadow: 0 4px 12px rgba(227,30,36,.10);
         }
-
         .service img {
             width: 68px;
             height: 68px;
@@ -173,19 +218,16 @@
             display: block;
             margin: 0 auto 5px;
         }
-
         .service-name {
             font-size: 14px;
             font-weight: 800;
             color: #252525;
         }
-
         .service-price {
             font-size: 12px;
             color: #777;
             margin-top: 2px;
         }
-
         .service-check {
             position: absolute;
             top: 7px;
@@ -200,18 +242,15 @@
             display: none;
             font-weight: 900;
         }
-
         .service.active .service-check {
             display: block;
         }
-
         /* FUEL */
         .fuel-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
-
         /* FILA DOBLE TOGGLE EN UNA MISMA LÍNEA */
         .double-toggle-row {
             display: flex;
@@ -219,7 +258,6 @@
             justify-content: space-between;
             gap: 12px;
         }
-
         .toggle-item {
             display: flex;
             align-items: center;
@@ -231,27 +269,23 @@
             padding: 10px 12px;
             border-radius: 12px;
         }
-
         .toggle-text {
             font-size: 13px;
             font-weight: 700;
             color: #333;
             white-space: nowrap;
         }
-
         .toggle {
             position: relative;
             width: 44px;
             height: 24px;
             flex-shrink: 0;
         }
-
         .toggle input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-
         .slider {
             position: absolute;
             cursor: pointer;
@@ -260,7 +294,6 @@
             border-radius: 30px;
             transition: .2s;
         }
-
         .slider:before {
             content: "";
             position: absolute;
@@ -273,15 +306,12 @@
             box-shadow: 0 2px 4px rgba(0,0,0,.2);
             transition: .2s;
         }
-
         .toggle input:checked + .slider {
             background: #e31e24;
         }
-
         .toggle input:checked + .slider:before {
             transform: translateX(20px);
         }
-
         /* CONDICIÓN ESPECIAL - BOTONES */
         .condition-buttons-single-line {
             display: flex;
@@ -290,7 +320,6 @@
             overflow-x: auto;
             padding-bottom: 2px;
         }
-
         .btn-option-sm {
             flex: 1 1 0px;
             min-width: 0;
@@ -306,14 +335,12 @@
             text-align: center;
             white-space: nowrap;
         }
-
         .btn-option-sm.active {
             border-color: #e31e24;
             background: #fff7f7;
             color: #e31e24;
             font-weight: 800;
         }
-
         /* TOTAL */
         .total-card {
             background: #202124;
@@ -322,25 +349,21 @@
             padding: 19px;
             margin-bottom: 16px;
         }
-
         .total-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 15px;
         }
-
         .total-label {
             font-size: 13px;
             opacity: .72;
         }
-
         .total-value {
             font-size: 30px;
             font-weight: 900;
             white-space: nowrap;
         }
-
         .breakdown {
             margin-top: 13px;
             padding-top: 13px;
@@ -349,7 +372,6 @@
             line-height: 1.65;
             color: rgba(255,255,255,.72);
         }
-
         /* BUTTON */
         .whatsapp-button {
             width: 100%;
@@ -364,15 +386,12 @@
             box-shadow: 0 6px 16px rgba(227,30,36,.22);
             transition: .18s;
         }
-
         .whatsapp-button:hover {
             background: #c9181e;
         }
-
         .whatsapp-button:active {
             transform: scale(.985);
         }
-
         /* HISTORY */
         .history-header {
             display: flex;
@@ -381,11 +400,9 @@
             gap: 10px;
             margin-bottom: 12px;
         }
-
         .history-header .section-title {
             margin: 0;
         }
-
         .clear-history {
             border: 0;
             background: transparent;
@@ -395,14 +412,12 @@
             cursor: pointer;
             padding: 5px;
         }
-
         .history-empty {
             font-size: 13px;
             color: #888;
             text-align: center;
             padding: 12px 0 4px;
         }
-
         .history-item {
             border: 1px solid #e5e5e5;
             border-radius: 13px;
@@ -410,35 +425,29 @@
             margin-bottom: 9px;
             background: #fafafa;
         }
-
         .history-item:last-child {
             margin-bottom: 0;
         }
-
         .history-main {
             display: flex;
             justify-content: space-between;
             gap: 12px;
         }
-
         .history-name {
             font-size: 14px;
             font-weight: 800;
         }
-
         .history-vehicle {
             font-size: 12px;
             color: #777;
             margin-top: 3px;
         }
-
         .history-total {
             font-size: 15px;
             font-weight: 900;
             white-space: nowrap;
             color: #e31e24;
         }
-
         .history-details {
             margin-top: 9px;
             padding-top: 9px;
@@ -447,13 +456,11 @@
             font-size: 11px;
             line-height: 1.6;
         }
-
         .history-actions {
             display: flex;
             gap: 7px;
             margin-top: 10px;
         }
-
         .history-action {
             border: 1px solid #ddd;
             background: white;
@@ -463,259 +470,326 @@
             font-weight: 700;
             cursor: pointer;
         }
-
         .history-action.delete {
             color: #e31e24;
         }
 
+        /* ESTILOS ESPECÍFICOS PARA LA VISTA DE PROFORMA */
+        .items-head, .item-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 85px 120px 36px;
+            gap: 8px;
+            align-items: center;
+        }
+        .items-head { font-size: 12px; color: #777; font-weight: 700; padding: 0 2px 7px; }
+        .item-row { margin-bottom: 9px; }
+        .item-row .qty, .item-row .price { text-align: right; }
+        .remove {
+            border: 0; border-radius: 10px; background: #f3f4f6; color: #6b7280;
+            height: 48px; font-size: 1.2rem; cursor: pointer;
+        }
+        .remove:hover { background: #fee2e2; color: #e31e24; }
+        .add-btn {
+            background: #fff; border: 1px dashed #f0a0a2; color: #e31e24;
+            border-radius: 12px; padding: 12px; font-weight: 700; cursor: pointer; width: 100%;
+            text-align: center; font-size: 14px;
+        }
+        .proforma-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .btn-pdf {
+            background: #e31e24; color: #fff; border: 0; border-radius: 14px;
+            min-height: 50px; font-weight: 800; font-size: 14px; cursor: pointer;
+        }
+        .btn-pdf:hover { background: #c9181e; }
+        .btn-clear-prof {
+            background: #fff; color: #202124; border: 1px solid #d9dce1; border-radius: 14px;
+            min-height: 50px; font-weight: 800; font-size: 14px; cursor: pointer;
+        }
+
         /* DESKTOP */
         @media (min-width: 700px) {
-            body {
-                padding: 25px 0;
-            }
-
+            body { padding: 25px 0; }
             .app {
                 min-height: auto;
                 border-radius: 22px;
                 overflow: hidden;
                 box-shadow: 0 10px 40px rgba(0,0,0,.08);
             }
-
-            .header {
-                position: relative;
-            }
+            .header { position: relative; }
         }
     </style>
 </head>
-
 <body>
-
 <div class="app">
-
     <header class="header">
         <div class="header-content">
-            <img src="https://www.carbucr.com/images/logoweb.png"
-                 alt="CARBU"
-                 class="logo">
-
+            <img src="https://www.carbucr.com/images/logoweb.png" alt="CARBU" class="logo">
             <div class="header-text">
-                <h1>Asistencia Vial 50201</h1>
-                <p>Cotizador de asistencia</p>
+                <h1 id="headerTitle">Asistencia Vial 50201</h1>
+                <p id="headerSub">Cotizador de asistencia</p>
+            </div>
+        </div>
+        <!-- MENÚ HAMBURGUESA -->
+        <div class="menu-container">
+            <button class="menu-btn" onclick="toggleMenu()" aria-label="Menú">☰</button>
+            <div class="menu-dropdown" id="menuDropdown">
+                <button class="menu-item active" id="menuCotizador" onclick="switchView('cotizador')">Cotizador</button>
+                <button class="menu-item" id="menuProforma" onclick="switchView('proforma')">Proforma</button>
             </div>
         </div>
     </header>
 
-    <main class="content">
-
-        <!-- CLIENTE -->
-        <section class="card">
-            <div class="section-title">Cliente</div>
-
-            <div class="field">
-                <label for="name">Nombre</label>
-                <input
-                    type="text"
-                    id="name"
-                    placeholder="Nombre del cliente"
-                    autocomplete="off">
-            </div>
-
-            <div class="field">
-                <label for="vehicle">Vehículo</label>
-                <input
-                    type="text"
-                    id="vehicle"
-                    placeholder="Vehículo"
-                    autocomplete="off">
-            </div>
-        </section>
-
-        <!-- KILOMETROS -->
-        <section class="card">
-            <div class="section-title">Kilómetros desde la base</div>
-
-            <div class="field">
-                <input
-                    type="number"
-                    id="km"
-                    min="0"
-                    step="1"
-                    inputmode="numeric"
-                    placeholder="0">
-            </div>
-        </section>
-
-        <!-- SERVICIO -->
-        <section class="card">
-            <div class="section-title">Servicio</div>
-
-            <div class="services">
-
-                <div class="service"
-                     data-service="gas"
-                     data-price="5000"
-                     onclick="selectService(this)">
-                    <div class="service-check">✓</div>
-                    <img src="https://www.carbucr.com/images/gas.png"
-                         alt="Gas">
-                    <div class="service-name">Gas</div>
-                    <div class="service-price">₡5,000</div>
-                </div>
-
-                <div class="service active"
-                     data-service="jumper"
-                     data-price="7000"
-                     onclick="selectService(this)">
-                    <div class="service-check">✓</div>
-                    <img src="https://www.carbucr.com/images/corriente.png"
-                         alt="Jumper">
-                    <div class="service-name">Jumper</div>
-                    <div class="service-price">₡7,000</div>
-                </div>
-
-                <div class="service"
-                     data-service="llanta"
-                     data-price="10000"
-                     onclick="selectService(this)">
-                    <div class="service-check">✓</div>
-                    <img src="https://www.carbucr.com/images/llanta.png"
-                         alt="Llanta">
-                    <div class="service-name">Llanta</div>
-                    <div class="service-price">₡10,000</div>
-                </div>
-
-                <div class="service"
-                     data-service="lockout"
-                     data-price="15000"
-                     onclick="selectService(this)">
-                    <div class="service-check">✓</div>
-                    <img src="https://www.carbucr.com/images/cierre.png"
-                         alt="Lockout">
-                    <div class="service-name">Lockout</div>
-                    <div class="service-price">₡15,000</div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- COMBUSTIBLE (Oculto por defecto, visible solo en servicio Gas) -->
-        <section class="card" id="fuelSection" style="display: none;">
-
-            <div class="section-title">Combustible</div>
-
-            <div class="fuel-grid">
-
+    <!-- VISTA 1: COTIZADOR (ORIGINAL) -->
+    <div id="viewCotizador" class="view-section active">
+        <main class="content">
+            <!-- CLIENTE -->
+            <section class="card">
+                <div class="section-title">Cliente</div>
                 <div class="field">
-                    <label for="litros">Litros *</label>
-                    <input
-                        type="number"
-                        id="litros"
-                        min="0"
-                        step="0.1"
-                        inputmode="decimal"
-                        placeholder="0">
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" placeholder="Nombre del cliente" autocomplete="off">
                 </div>
-
                 <div class="field">
-                    <label for="precioLitro">₡ por Litro *</label>
-                    <input
-                        type="number"
-                        id="precioLitro"
-                        min="0"
-                        step="1"
-                        inputmode="numeric"
-                        placeholder="0">
+                    <label for="vehicle">Vehículo</label>
+                    <input type="text" id="vehicle" placeholder="Vehículo" autocomplete="off">
                 </div>
-
-            </div>
-
-        </section>
-
-        <!-- AJUSTES (Condición Especial e IVA en la misma línea) -->
-        <section class="card">
-            <div class="double-toggle-row">
-                <div class="toggle-item">
-                    <span class="toggle-text">Cond. Especial</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="enableSpecial" onchange="toggleSpecialCondition()">
-                        <span class="slider"></span>
-                    </label>
+            </section>
+            <!-- KILOMETROS -->
+            <section class="card">
+                <div class="section-title">Kilómetros desde la base</div>
+                <div class="field">
+                    <input type="number" id="km" min="0" step="1" inputmode="numeric" placeholder="0">
                 </div>
-
-                <div class="toggle-item">
-                    <span class="toggle-text">IVA</span>
-                    <label class="toggle">
-                        <input type="checkbox" id="applyIVA">
-                        <span class="slider"></span>
-                    </label>
+            </section>
+            <!-- SERVICIO -->
+            <section class="card">
+                <div class="section-title">Servicio</div>
+                <div class="services">
+                    <div class="service" data-service="gas" data-price="5000" onclick="selectService(this)">
+                        <div class="service-check">✓</div>
+                        <img src="https://www.carbucr.com/images/gas.png" alt="Gas">
+                        <div class="service-name">Gas</div>
+                        <div class="service-price">₡5,000</div>
+                    </div>
+                    <div class="service active" data-service="jumper" data-price="7000" onclick="selectService(this)">
+                        <div class="service-check">✓</div>
+                        <img src="https://www.carbucr.com/images/corriente.png" alt="Jumper">
+                        <div class="service-name">Jumper</div>
+                        <div class="service-price">₡7,000</div>
+                    </div>
+                    <div class="service" data-service="llanta" data-price="10000" onclick="selectService(this)">
+                        <div class="service-check">✓</div>
+                        <img src="https://www.carbucr.com/images/llanta.png" alt="Llanta">
+                        <div class="service-name">Llanta</div>
+                        <div class="service-price">₡10,000</div>
+                    </div>
+                    <div class="service" data-service="lockout" data-price="15000" onclick="selectService(this)">
+                        <div class="service-check">✓</div>
+                        <img src="https://www.carbucr.com/images/cierre.png" alt="Lockout">
+                        <div class="service-name">Lockout</div>
+                        <div class="service-price">₡15,000</div>
+                    </div>
                 </div>
-            </div>
-
-            <div id="specialConditionOptions" style="display: none;">
-                <div class="condition-buttons-single-line">
-                    <button type="button" class="btn-option-sm active" data-val="5000" onclick="selectSpecialOption(this)">₡5,000</button>
-                    <button type="button" class="btn-option-sm" data-val="10000" onclick="selectSpecialOption(this)">₡10,000</button>
-                    <button type="button" class="btn-option-sm" data-val="15000" onclick="selectSpecialOption(this)">₡15,000</button>
-                    <button type="button" class="btn-option-sm" data-val="custom" onclick="selectSpecialOption(this)">Otro</button>
+            </section>
+            <!-- COMBUSTIBLE -->
+            <section class="card" id="fuelSection" style="display: none;">
+                <div class="section-title">Combustible</div>
+                <div class="fuel-grid">
+                    <div class="field">
+                        <label for="litros">Litros *</label>
+                        <input type="number" id="litros" min="0" step="0.1" inputmode="decimal" placeholder="0">
+                    </div>
+                    <div class="field">
+                        <label for="precioLitro">₡ por Litro *</label>
+                        <input type="number" id="precioLitro" min="0" step="1" inputmode="numeric" placeholder="0">
+                    </div>
                 </div>
-
-                <div class="field" id="customConditionField" style="display: none; margin-top: 12px;">
-                    <label for="customCondition">Monto Personalizado</label>
-                    <input type="text" id="customCondition" inputmode="numeric" placeholder="₡0" oninput="formatCustomCurrency(this)">
+            </section>
+            <!-- AJUSTES -->
+            <section class="card">
+                <div class="double-toggle-row">
+                    <div class="toggle-item">
+                        <span class="toggle-text">Cond. Especial</span>
+                        <label class="toggle">
+                            <input type="checkbox" id="enableSpecial" onchange="toggleSpecialCondition()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-item">
+                        <span class="toggle-text">IVA</span>
+                        <label class="toggle">
+                            <input type="checkbox" id="applyIVA">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- TOTAL -->
-        <section class="total-card">
-
-            <div class="total-top">
-
-                <div class="total-label">
-                    Total
+                <div id="specialConditionOptions" style="display: none;">
+                    <div class="condition-buttons-single-line">
+                        <button type="button" class="btn-option-sm active" data-val="5000" onclick="selectSpecialOption(this)">₡5,000</button>
+                        <button type="button" class="btn-option-sm" data-val="10000" onclick="selectSpecialOption(this)">₡10,000</button>
+                        <button type="button" class="btn-option-sm" data-val="15000" onclick="selectSpecialOption(this)">₡15,000</button>
+                        <button type="button" class="btn-option-sm" data-val="custom" onclick="selectSpecialOption(this)">Otro</button>
+                    </div>
+                    <div class="field" id="customConditionField" style="display: none; margin-top: 12px;">
+                        <label for="customCondition">Monto Personalizado</label>
+                        <input type="text" id="customCondition" inputmode="numeric" placeholder="₡0" oninput="formatCustomCurrency(this)">
+                    </div>
                 </div>
-
-                <div class="total-value" id="total">
-                    ₡12,000
+            </section>
+            <!-- TOTAL -->
+            <section class="total-card">
+                <div class="total-top">
+                    <div class="total-label">Total</div>
+                    <div class="total-value" id="total">₡12,000</div>
                 </div>
+                <div class="breakdown" id="breakdown">Base ₡5,000 + KM ₡0 + Servicio ₡7,000</div>
+            </section>
+            <!-- WHATSAPP -->
+            <button class="whatsapp-button" onclick="sendWhatsApp()">💬 Enviar cotización por WhatsApp</button>
+            <!-- HISTORIAL -->
+            <section class="card" style="margin-top:16px;">
+                <div class="history-header">
+                    <div class="section-title">Historial</div>
+                    <button class="clear-history" onclick="clearHistory()">Borrar historial</button>
+                </div>
+                <div id="historyList"></div>
+            </section>
+        </main>
+    </div>
 
-            </div>
+    <!-- VISTA 2: PROFORMA (GENERADOR PDF) -->
+    <div id="viewProforma" class="view-section">
+        <main class="content">
+            <section class="card">
+                <div class="section-title"><span style="color:#e31e24; font-weight:900;">1</span> Datos de la cotización</div>
+                <div class="grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="field">
+                        <label for="profDate">Fecha</label>
+                        <input id="profDate" type="date">
+                    </div>
+                    <div class="field">
+                        <label for="profValidDays">Válida por (días)</label>
+                        <input id="profValidDays" type="number" min="1" value="7">
+                    </div>
+                    <div class="field">
+                        <label for="profNumber">Número de cotización</label>
+                        <input id="profNumber" type="text">
+                    </div>
+                    <div class="field">
+                        <label for="profCurrency">Moneda</label>
+                        <select id="profCurrency">
+                            <option value="CRC">Colones (CRC)</option>
+                            <option value="USD">Dólares (US$)</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
 
-            <div class="breakdown" id="breakdown">
-                Base ₡5,000 + KM ₡0 + Servicio ₡7,000
-            </div>
+            <section class="card">
+                <div class="section-title"><span style="color:#e31e24; font-weight:900;">2</span> Datos del cliente</div>
+                <div class="field">
+                    <label for="profClientName">Nombre del cliente</label>
+                    <input id="profClientName" placeholder="Nombre o empresa">
+                </div>
+                <div class="field">
+                    <label for="profClientPhone">Teléfono</label>
+                    <input id="profClientPhone" type="tel" placeholder="8888-8888">
+                </div>
+                <div class="field">
+                    <label for="profVehicle">Vehículo</label>
+                    <input id="profVehicle" placeholder="Ej. Toyota RAV4 / Placa ABC-123">
+                </div>
+                <div class="field">
+                    <label for="profOrigin">Origen</label>
+                    <input id="profOrigin" placeholder="Lugar de recogida">
+                </div>
+                <div class="field">
+                    <label for="profDestination">Destino</label>
+                    <input id="profDestination" placeholder="Lugar de entrega">
+                </div>
+            </section>
 
-        </section>
+            <section class="card">
+                <div class="section-title"><span style="color:#e31e24; font-weight:900;">3</span> Detalle y precios</div>
+                <div class="items-head"><span>Descripción</span><span>Cant.</span><span>Precio unit.</span><span></span></div>
+                <div id="profItems"></div>
+                <button class="add-btn" id="profAddBtn" type="button">＋ Agregar línea</button>
 
-        <!-- WHATSAPP -->
-        <button
-            class="whatsapp-button"
-            onclick="sendWhatsApp()">
-            💬 Enviar cotización por WhatsApp
-        </button>
+                <div class="totals" style="margin-top:18px; border-top:1px solid #e5e7eb; padding-top:13px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <div class="field" style="flex:1; margin-bottom:0;">
+                            <label for="profTaxRate">IVA (%)</label>
+                            <input id="profTaxRate" type="number" min="0" max="100" step="0.01" value="13">
+                        </div>
+                        <div style="flex:1; padding-left:15px; display:flex; align-items:center; margin-top:18px;">
+                            <label style="display:flex; gap:8px; align-items:center; font-size:13px; font-weight:700; cursor:pointer;">
+                                <input id="profApplyTax" type="checkbox" checked style="width:auto; height:auto;"> Incluir IVA
+                            </label>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding:5px 0; color:#777; font-size:13px;"><span>Subtotal</span><strong id="profSubtotalText" style="color:#202124;">CRC 0,00</strong></div>
+                    <div style="display:flex; justify-content:space-between; padding:5px 0; color:#777; font-size:13px;"><span id="profTaxLabel">IVA (13%)</span><strong id="profTaxText" style="color:#202124;">CRC 0,00</strong></div>
+                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid #e5e7eb; margin-top:5px; font-size:16px; font-weight:900;"><span>Total cotizado</span><strong id="profGrandText" style="color:#e31e24;">CRC 0,00</strong></div>
+                </div>
+            </section>
 
-        <!-- HISTORIAL -->
-        <section class="card" style="margin-top:16px;">
+            <section class="card">
+                <div class="section-title"><span style="color:#e31e24; font-weight:900;">4</span> Condiciones y observaciones</div>
+                <div class="field">
+                    <label for="profNotes">Observaciones / condiciones</label>
+                    <textarea id="profNotes" placeholder="Ej. Cotización sujeta a las condiciones de acceso y carga indicadas."></textarea>
+                </div>
+                <div class="field">
+                    <label for="profContactInfo">Contacto de CARBU (opcional)</label>
+                    <input id="profContactInfo" placeholder="Teléfono, WhatsApp o correo">
+                </div>
+            </section>
 
-            <div class="history-header">
-                <div class="section-title">Historial</div>
-
-                <button
-                    class="clear-history"
-                    onclick="clearHistory()">
-                    Borrar historial
-                </button>
-            </div>
-
-            <div id="historyList"></div>
-
-        </section>
-
-    </main>
-
+            <section class="card">
+                <div class="proforma-actions">
+                    <button class="btn-pdf" id="profMakePdf" type="button">Descargar PDF</button>
+                    <button class="btn-clear-prof" id="profReset" type="button">Limpiar</button>
+                </div>
+                <p id="profError" style="color:#e31e24; font-size:13px; margin-top:10px; display:none;"></p>
+            </section>
+        </main>
+    </div>
 </div>
 
 <script>
+    /* --- LÓGICA DEL MENÚ Y VISTAS --- */
+    function toggleMenu() {
+        document.getElementById("menuDropdown").classList.toggle("show");
+    }
+
+    window.addEventListener("click", function(e) {
+        if (!e.target.closest(".menu-container")) {
+            document.getElementById("menuDropdown").classList.remove("show");
+        }
+    });
+
+    function switchView(view) {
+        document.querySelectorAll(".view-section").forEach(sec => sec.classList.remove("active"));
+        document.querySelectorAll(".menu-item").forEach(item => item.classList.remove("active"));
+        document.getElementById("menuDropdown").classList.remove("show");
+
+        if (view === 'cotizador') {
+            document.getElementById("viewCotizador").classList.add("active");
+            document.getElementById("menuCotizador").classList.add("active");
+            document.getElementById("headerTitle").textContent = "Asistencia Vial 50201";
+            document.getElementById("headerSub").textContent = "Cotizador de asistencia";
+        } else {
+            document.getElementById("viewProforma").classList.add("active");
+            document.getElementById("menuProforma").classList.add("active");
+            document.getElementById("headerTitle").textContent = "Proforma | CARBU";
+            document.getElementById("headerSub").textContent = "Carlos Jiménez Salas · 6-0156-0943";
+        }
+    }
+
+    /* --- LÓGICA ORIGINAL DEL COTIZADOR --- */
     const BASE = 5000;
     const KM_BASE = 5;
     const KM_PRICE = 550;
@@ -728,17 +802,14 @@
     const litrosInput = document.getElementById("litros");
     const precioLitroInput = document.getElementById("precioLitro");
     const fuelSection = document.getElementById("fuelSection");
-    
     const enableSpecial = document.getElementById("enableSpecial");
     const specialConditionOptions = document.getElementById("specialConditionOptions");
     const customConditionField = document.getElementById("customConditionField");
     const customConditionInput = document.getElementById("customCondition");
     const applyIVAInput = document.getElementById("applyIVA");
-
     const nameInput = document.getElementById("name");
     const vehicleInput = document.getElementById("vehicle");
 
-    /* Formatear Moneda Personalizada */
     function formatCustomCurrency(input) {
         let raw = input.value.replace(/\D/g, "");
         if (raw === "") {
@@ -755,14 +826,11 @@
         return raw ? parseInt(raw, 10) : 0;
     }
 
-    /* Selección de servicio */
     function selectService(element) {
         document.querySelectorAll(".service").forEach(service => {
             service.classList.remove("active");
         });
-
         element.classList.add("active");
-
         serviceFee = Number(element.dataset.price);
         serviceType = element.dataset.service;
 
@@ -774,26 +842,18 @@
             precioLitroInput.value = "";
             clearFuelErrors();
         }
-
         calculate();
     }
 
-    /* Mostrar / Ocultar Condición Especial */
     function toggleSpecialCondition() {
-        if (enableSpecial.checked) {
-            specialConditionOptions.style.display = "block";
-        } else {
-            specialConditionOptions.style.display = "none";
-        }
+        specialConditionOptions.style.display = enableSpecial.checked ? "block" : "none";
         calculate();
     }
 
-    /* Selección de botón de Condición Especial */
     function selectSpecialOption(btnElement) {
         document.querySelectorAll(".condition-buttons-single-line .btn-option-sm").forEach(btn => {
             btn.classList.remove("active");
         });
-
         btnElement.classList.add("active");
         selectedSpecialValue = btnElement.dataset.val;
 
@@ -804,19 +864,14 @@
             customConditionField.style.display = "none";
             customConditionInput.value = "";
         }
-
         calculate();
     }
 
-    /* Cálculo de kilómetros */
     function calculateKm(km) {
-        if (km <= KM_BASE) {
-            return BASE;
-        }
+        if (km <= KM_BASE) return BASE;
         return Math.max(BASE, km * KM_PRICE);
     }
 
-    /* Cálculo completo */
     function calculate() {
         const km = Math.max(0, Number(kmInput.value) || 0);
         const litros = Math.max(0, Number(litrosInput.value) || 0);
@@ -835,49 +890,23 @@
         }
 
         const subtotalServicios = kmCost + serviceFee + specialFee;
-        
-        let ivaCost = 0;
-        if (applyIVAInput.checked) {
-            ivaCost = subtotalServicios * 0.13;
-        }
-
+        let ivaCost = applyIVAInput.checked ? subtotalServicios * 0.13 : 0;
         const total = subtotalServicios + ivaCost + fuelCost;
 
         document.getElementById("total").textContent = "₡" + Math.round(total).toLocaleString("es-CR");
 
-        let breakdown = "Base/KM ₡" + kmCost.toLocaleString("es-CR") + " + Servicio ₡" + serviceFee.toLocaleString("es-CR");
+        let breakdown = km > 0 && km > KM_BASE 
+            ? "KM " + km + " × ₡550 = ₡" + kmCost.toLocaleString("es-CR") + " + Servicio ₡" + serviceFee.toLocaleString("es-CR")
+            : "Base ₡" + kmCost.toLocaleString("es-CR") + " + Servicio ₡" + serviceFee.toLocaleString("es-CR");
 
-        if (km > 0) {
-            if (km <= KM_BASE) {
-                breakdown = "Base ₡" + kmCost.toLocaleString("es-CR") + " + Servicio ₡" + serviceFee.toLocaleString("es-CR");
-            } else {
-                breakdown = "KM " + km + " × ₡550 = ₡" + kmCost.toLocaleString("es-CR") + " + Servicio ₡" + serviceFee.toLocaleString("es-CR");
-            }
-        }
-
-        if (specialFee > 0) {
-            breakdown += " + Cond. Especial ₡" + specialFee.toLocaleString("es-CR");
-        }
-
-        if (ivaCost > 0) {
-            breakdown += " + IVA (13%) ₡" + Math.round(ivaCost).toLocaleString("es-CR");
-        }
-
-        if (fuelCost > 0) {
-            breakdown += " + Combustible ₡" + fuelCost.toLocaleString("es-CR");
-        }
+        if (specialFee > 0) breakdown += " + Cond. Especial ₡" + specialFee.toLocaleString("es-CR");
+        if (ivaCost > 0) breakdown += " + IVA (13%) ₡" + Math.round(ivaCost).toLocaleString("es-CR");
+        if (fuelCost > 0) breakdown += " + Combustible ₡" + fuelCost.toLocaleString("es-CR");
 
         document.getElementById("breakdown").textContent = breakdown;
 
         return {
-            km,
-            kmCost,
-            litros,
-            precioLitro,
-            fuelCost,
-            specialFee,
-            ivaCost,
-            total: Math.round(total)
+            km, kmCost, litros, precioLitro, fuelCost, specialFee, ivaCost, total: Math.round(total)
         };
     }
 
@@ -898,7 +927,6 @@
     nameInput.addEventListener("input", calculate);
     vehicleInput.addEventListener("input", calculate);
 
-    /* Historial */
     function getHistory() {
         try {
             return JSON.parse(localStorage.getItem("carbuHistorial") || "[]");
@@ -910,25 +938,20 @@
     function saveHistory(record) {
         const history = getHistory();
         history.unshift(record);
-        const limitedHistory = history.slice(0, 100);
-
-        localStorage.setItem("carbuHistorial", JSON.stringify(limitedHistory));
+        localStorage.setItem("carbuHistorial", JSON.stringify(history.slice(0, 100)));
         renderHistory();
     }
 
     function renderHistory() {
         const historyList = document.getElementById("historyList");
         const history = getHistory();
-
         if (history.length === 0) {
             historyList.innerHTML = '<div class="history-empty">No hay servicios guardados.</div>';
             return;
         }
-
         historyList.innerHTML = history.map((item, index) => {
             const date = new Date(item.date);
             const dateText = date.toLocaleDateString("es-CR") + " " + date.toLocaleTimeString("es-CR", { hour: "2-digit", minute: "2-digit" });
-
             return `
                 <div class="history-item">
                     <div class="history-main">
@@ -939,8 +962,7 @@
                         <div class="history-total">₡${Number(item.total).toLocaleString("es-CR")}</div>
                     </div>
                     <div class="history-details">
-                        ${dateText}<br>
-                        ${item.km} km · ${getServiceName(item.serviceType)}
+                        ${dateText}<br>${item.km} km · ${getServiceName(item.serviceType)}
                         ${item.specialFee > 0 ? " · Cond. Especial ₡" + Number(item.specialFee).toLocaleString("es-CR") : ""}
                         ${item.ivaCost > 0 ? " · IVA ₡" + Math.round(item.ivaCost).toLocaleString("es-CR") : ""}
                         ${item.fuelCost > 0 ? " · Combustible ₡" + Number(item.fuelCost).toLocaleString("es-CR") : ""}
@@ -966,11 +988,7 @@
 
     function escapeHTML(value) {
         return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
     function loadHistory(index) {
@@ -988,7 +1006,6 @@
         if (item.specialFee > 0) {
             enableSpecial.checked = true;
             specialConditionOptions.style.display = "block";
-
             if ([5000, 10000, 15000].includes(item.specialFee)) {
                 selectedSpecialValue = String(item.specialFee);
                 customConditionField.style.display = "none";
@@ -998,7 +1015,6 @@
                 customConditionField.style.display = "block";
                 customConditionInput.value = "₡" + Number(item.specialFee).toLocaleString("es-CR");
             }
-
             document.querySelectorAll(".condition-buttons-single-line .btn-option-sm").forEach(btn => {
                 btn.classList.toggle("active", btn.dataset.val === selectedSpecialValue);
             });
@@ -1027,43 +1043,25 @@
     function clearHistory() {
         const history = getHistory();
         if (history.length === 0) return;
-
         if (confirm("¿Borrar todo el historial?")) {
             localStorage.removeItem("carbuHistorial");
             renderHistory();
         }
     }
 
-    /* Mensaje de WhatsApp directo para emergencias */
     function sendWhatsApp() {
-        let hasError = false;
-
         if (serviceType === "gas") {
             const l = Number(litrosInput.value);
             const p = Number(precioLitroInput.value);
-
             clearFuelErrors();
-
-            if (!l || l <= 0) {
-                litrosInput.classList.add("input-error");
-                hasError = true;
-            }
-
-            if (!p || p <= 0) {
-                precioLitroInput.classList.add("input-error");
-                hasError = true;
-            }
-
+            let hasError = false;
+            if (!l || l <= 0) { litrosInput.classList.add("input-error"); hasError = true; }
+            if (!p || p <= 0) { precioLitroInput.classList.add("input-error"); hasError = true; }
             if (hasError) {
-                if (!l || l <= 0) {
-                    litrosInput.focus();
-                } else {
-                    precioLitroInput.focus();
-                }
+                if (!l || l <= 0) litrosInput.focus(); else precioLitroInput.focus();
                 return;
             }
         }
-
         const calculation = calculate();
         const name = nameInput.value.trim() || "Estimado cliente";
         const vehicle = vehicleInput.value.trim() || "su vehículo";
@@ -1084,20 +1082,347 @@
         });
 
         const ivaLabel = calculation.ivaCost > 0 ? "IVA incluido" : "+ IVA si requiere factura";
-
         let message = `🚨 *CARBU | Asistencia Vial*\n\n`;
         message += `Hola ${name}, podemos atender su vehículo ${vehicle} por ${serviceName}.\n\n`;
         message += `💰 *Costo total:* ₡${calculation.total.toLocaleString("es-CR")}\n`;
         message += `[${ivaLabel}]\n\n`;
         message += `Si está de acuerdo con el costo, confírmenos y coordinamos la asistencia.`;
 
-        const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-        window.open(url, "_blank");
+        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
     }
 
-    renderHistory();
-    calculate();
-</script>
 
+    /* --- LÓGICA DE LA PROFORMA (PDF) --- */
+    const profItemsEl = document.getElementById('profItems');
+    const profCurrency = () => document.getElementById('profCurrency').value;
+
+    const profMoney = (n) => {
+      const curr = profCurrency();
+      const numFormatted = new Intl.NumberFormat('es-CR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(n) || 0);
+      return curr === 'CRC' ? 'CRC ' + numFormatted : 'US$ ' + numFormatted;
+    };
+
+    function makeProfItem(description = '', quantity = 1, price = '') {
+      if (!profItemsEl) return;
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <input class="desc" type="text" placeholder="Descripción del servicio" value="">
+        <input class="qty" type="number" min="0" step="0.01" value="">
+        <input class="price" type="number" min="0" step="0.01" placeholder="0.00" value="">
+        <button class="remove" type="button" title="Eliminar línea">×</button>`;
+      row.querySelector('.desc').value = description;
+      row.querySelector('.qty').value = quantity;
+      row.querySelector('.price').value = price;
+      row.querySelectorAll('input').forEach(input => input.addEventListener('input', updateProfTotals));
+      row.querySelector('.remove').addEventListener('click', () => {
+        if (profItemsEl.children.length > 1) {
+          row.remove();
+        } else {
+          row.querySelector('.desc').value = '';
+          row.querySelector('.qty').value = 1;
+          row.querySelector('.price').value = '';
+        }
+        updateProfTotals();
+      });
+      profItemsEl.appendChild(row);
+      updateProfTotals();
+    }
+
+    function getProfItems() {
+      if (!profItemsEl) return [];
+      return [...profItemsEl.querySelectorAll('.item-row')].map(row => ({
+        description: row.querySelector('.desc').value.trim(),
+        quantity: Math.max(0, Number(row.querySelector('.qty').value) || 0),
+        price: Math.max(0, Number(row.querySelector('.price').value) || 0)
+      })).filter(item => item.description || item.price > 0);
+    }
+
+    function profTotalsCalc() {
+      const subtotal = profItemsEl ? [...profItemsEl.querySelectorAll('.item-row')].reduce((sum, row) => {
+        const q = Math.max(0, Number(row.querySelector('.qty').value) || 0);
+        const p = Math.max(0, Number(row.querySelector('.price').value) || 0);
+        return sum + q * p;
+      }, 0) : 0;
+      const rate = Math.max(0, Number(document.getElementById('profTaxRate').value) || 0);
+      const tax = document.getElementById('profApplyTax').checked ? subtotal * rate / 100 : 0;
+      return { subtotal, rate, tax, grand: subtotal + tax };
+    }
+
+    function updateProfTotals() {
+      const t = profTotalsCalc();
+      if (document.getElementById('profSubtotalText')) document.getElementById('profSubtotalText').textContent = profMoney(t.subtotal);
+      if (document.getElementById('profTaxText')) document.getElementById('profTaxText').textContent = profMoney(t.tax);
+      if (document.getElementById('profTaxLabel')) document.getElementById('profTaxLabel').textContent = document.getElementById('profApplyTax').checked ? `IVA (${t.rate}%)` : 'IVA (no aplicado)';
+      if (document.getElementById('profGrandText')) document.getElementById('profGrandText').textContent = profMoney(t.grand);
+    }
+
+    function loadLogoData(url) {
+      return new Promise(resolve => {
+        if (!url) { resolve(null); return; }
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth || 300;
+            canvas.height = img.naturalHeight || 300;
+            canvas.getContext('2d').drawImage(img, 0, 0);
+            resolve({ data: canvas.toDataURL('image/png'), format: 'PNG', width: canvas.width, height: canvas.height });
+          } catch (e) { resolve(null); }
+        };
+        img.onerror = () => resolve(null);
+        img.src = url;
+      });
+    }
+
+    async function generateProfPdf() {
+      const error = document.getElementById('profError');
+      if (error) error.style.display = 'none';
+
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        if (error) { error.textContent = 'No se pudo cargar la librería PDF.'; error.style.display = 'block'; }
+        return;
+      }
+
+      const client = document.getElementById('profClientName').value.trim();
+      const items = getProfItems();
+
+      if (!client) {
+        if (error) { error.textContent = 'Ingresá el nombre del cliente.'; error.style.display = 'block'; }
+        document.getElementById('profClientName').focus();
+        return;
+      }
+
+      if (!items.length) {
+        if (error) { error.textContent = 'Completá al menos una línea de detalle.'; error.style.display = 'block'; }
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const pageW = 210, margin = 15, contentW = pageW - margin * 2;
+      const red = [227, 30, 36], dark = [32, 33, 36], muted = [105, 112, 122], lineGray = [229, 231, 235];
+      
+      const quoteNo = escapeHTML(document.getElementById('profNumber').value) || ('CARBU-' + new Date().getFullYear());
+      const [yYr, yMo, yDa] = (document.getElementById('profDate').value || '').split('-');
+      const dateText = (yYr && yMo && yDa) ? `${yDa}/${yMo}/${yYr}` : '—';
+      const validDays = Math.max(1, Number(document.getElementById('profValidDays').value) || 7);
+      const t = profTotalsCalc();
+      let y = 15;
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(26);
+      doc.setTextColor(...dark);
+      doc.text('COTIZACIÓN', margin, y + 8);
+
+      const logoImg = document.querySelector('.logo');
+      const logoUrl = logoImg ? (logoImg.currentSrc || logoImg.src) : 'https://www.carbucr.com/images/logoweb.png';
+      const logoData = await loadLogoData(logoUrl);
+      let logoWidth = 26, logoHeight = 26;
+
+      if (logoData) {
+        try {
+          const ratio = (logoData.width || 1) / (logoData.height || 1);
+          logoWidth = 26;
+          logoHeight = logoWidth / ratio;
+          if (logoHeight > 26) { logoHeight = 26; logoWidth = logoHeight * ratio; }
+          doc.addImage(logoData.data, logoData.format, pageW - margin - logoWidth, y, logoWidth, logoHeight, undefined, 'FAST');
+        } catch (e) {}
+      }
+
+      y += 18;
+      doc.setDrawColor(...red);
+      doc.setLineWidth(0.6);
+      doc.line(margin, y, pageW - margin, y);
+      y += 8;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9.5);
+      doc.setTextColor(...dark);
+      doc.text(`Número de cotización: #${quoteNo}`, margin, y);
+      y += 5;
+      doc.text(`Fecha de emisión: ${dateText} (Válida por ${validDays} días)`, margin, y);
+      y += 12;
+
+      const colW = contentW / 2 - 5;
+      const col2X = margin + colW + 10;
+      const carbuContact = document.getElementById('profContactInfo').value.trim();
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(...dark);
+      doc.text('CARBU / ASISTENCIA VIAL', margin, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(...muted);
+      doc.text('Carlos Jiménez Salas', margin, y + 5);
+      doc.text('Cédula: 6-0156-0943', margin, y + 10);
+      doc.text('Teléfono: ' + (carbuContact || '—'), margin, y + 15);
+      doc.text('Sitio web: www.carbucr.com', margin, y + 20);
+
+      const clientPhoneVal = document.getElementById('profClientPhone').value.trim();
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(...dark);
+      doc.text('COTIZADO A', col2X, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(...muted);
+      doc.text(client, col2X, y + 5);
+      
+      let clientY = y + 10;
+      if (clientPhoneVal) { doc.text(`Teléfono: ${clientPhoneVal}`, col2X, clientY); clientY += 5; }
+
+      const vehicleVal = document.getElementById('profVehicle').value.trim();
+      const origin = document.getElementById('profOrigin').value.trim();
+      const destination = document.getElementById('profDestination').value.trim();
+
+      if (vehicleVal) { doc.text(`Vehículo: ${vehicleVal}`, col2X, clientY); clientY += 5; }
+      if (origin || destination) {
+        doc.text(`Origen: ${origin || '—'}`, col2X, clientY); clientY += 5;
+        doc.text(`Destino: ${destination || '—'}`, col2X, clientY); clientY += 5;
+      }
+
+      y += 30;
+
+      const tX = margin;
+      const tDescW = 95, tPriceW = 32, tQtyW = 18, tAmtW = 35;
+      const c1 = tX, c2 = c1 + tDescW, c3 = c2 + tPriceW, c4 = c3 + tQtyW;
+      const tableW = tDescW + tPriceW + tQtyW + tAmtW;
+
+      doc.setFillColor(...red);
+      doc.rect(tX, y, tableW, 8, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text('Descripción / Servicio', c1 + 4, y + 5.5);
+      doc.text('Precio Unit.', c2 + tPriceW / 2, y + 5.5, { align: 'center' });
+      doc.text('Cant.', c3 + tQtyW / 2, y + 5.5, { align: 'center' });
+      doc.text('Monto', c4 + tAmtW - 4, y + 5.5, { align: 'right' });
+      y += 8;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(...dark);
+
+      items.forEach((item) => {
+        const descLines = doc.splitTextToSize(item.description || 'Servicio', tDescW - 8);
+        const rowH = Math.max(9, descLines.length * 4.5 + 4);
+
+        if (y + rowH > 240) { doc.addPage(); y = 20; }
+
+        doc.setDrawColor(...lineGray);
+        doc.setLineWidth(0.3);
+        doc.rect(tX, y, tableW, rowH);
+
+        doc.line(c2, y, c2, y + rowH);
+        doc.line(c3, y, c3, y + rowH);
+        doc.line(c4, y, c4, y + rowH);
+
+        doc.text(descLines, c1 + 4, y + 6);
+        doc.text(profMoney(item.price), c2 + tPriceW / 2, y + 6, { align: 'center' });
+        doc.text(String(item.quantity), c3 + tQtyW / 2, y + 6, { align: 'center' });
+        doc.text(profMoney(item.quantity * item.price), c4 + tAmtW - 4, y + 6, { align: 'right' });
+
+        y += rowH;
+      });
+
+      y += 8;
+
+      const notesY = y;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(...dark);
+      doc.text('OBSERVACIONES Y CONDICIONES:', margin, y);
+      y += 5;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(...muted);
+      const notesText = document.getElementById('profNotes').value.trim() || `Cotización válida por ${validDays} días.`;
+      const noteLines = doc.splitTextToSize(notesText, 90);
+      doc.text(noteLines, margin, y);
+
+      let totY = notesY;
+      const totBoxW = 85;
+      const totX = pageW - margin - totBoxW;
+
+      const totalRows = [
+        ['Subtotal', profMoney(t.subtotal)],
+        [document.getElementById('profApplyTax').checked ? `IVA (${t.rate}%)` : 'IVA (no aplicado)', profMoney(t.tax)],
+        ['Total cotizado', profMoney(t.grand)]
+      ];
+
+      totalRows.forEach(([lbl, val], idx) => {
+        const isGrand = idx === 2;
+        doc.setDrawColor(...lineGray);
+        doc.rect(totX, totY, totBoxW, 8);
+
+        doc.setFont('helvetica', isGrand ? 'bold' : 'normal');
+        doc.setFontSize(isGrand ? 10 : 9);
+        doc.setTextColor(...(isGrand ? red : dark));
+
+        doc.text(lbl, totX + 4, totY + 5.5);
+        doc.text(val, totX + totBoxW - 4, totY + 5.5, { align: 'right' });
+        totY += 8;
+      });
+
+      const bottomBandH = 15;
+      const bottomBandY = 297 - bottomBandH;
+      doc.setFillColor(...red);
+      doc.rect(0, bottomBandY, pageW, bottomBandH, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text('www.carbucr.com  |  Carlos Jiménez Salas · Cédula 6-0156-0943  |  Asistencia Vial', pageW / 2, bottomBandY + 9.5, { align: 'center' });
+
+      doc.save(`Cotizacion-CARBU-${quoteNo}.pdf`);
+    }
+
+    function resetProfForm() {
+      if (!confirm('¿Querés limpiar todos los campos de la proforma?')) return;
+      document.getElementById('profClientName').value = '';
+      document.getElementById('profClientPhone').value = '';
+      document.getElementById('profVehicle').value = '';
+      document.getElementById('profOrigin').value = '';
+      document.getElementById('profDestination').value = '';
+      document.getElementById('profNotes').value = '';
+      document.getElementById('profContactInfo').value = '';
+      document.getElementById('profValidDays').value = 7;
+      document.getElementById('profCurrency').value = 'CRC';
+      document.getElementById('profTaxRate').value = 13;
+      document.getElementById('profApplyTax').checked = true;
+
+      const today = new Date();
+      document.getElementById('profDate').value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+      document.getElementById('profNumber').value = 'CARBU-' + today.getFullYear() + '-' + String(Date.now()).slice(-5);
+      
+      profItemsEl.innerHTML = '';
+      makeProfItem('Servicio de grúa', 1, '');
+      updateProfTotals();
+    }
+
+    /* Inicialización de eventos */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHistory();
+      calculate();
+
+      // Fechas iniciales proforma
+      const today = new Date();
+      document.getElementById('profDate').value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+      document.getElementById('profNumber').value = 'CARBU-' + today.getFullYear() + '-' + String(Date.now()).slice(-5);
+      
+      makeProfItem('Servicio de grúa', 1, '');
+
+      document.getElementById('profAddBtn').addEventListener('click', () => makeProfItem('', 1, ''));
+      document.getElementById('profMakePdf').addEventListener('click', generateProfPdf);
+      document.getElementById('profReset').addEventListener('click', resetProfForm);
+      document.getElementById('profCurrency').addEventListener('change', updateProfTotals);
+      document.getElementById('profTaxRate').addEventListener('input', updateProfTotals);
+      document.getElementById('profApplyTax').addEventListener('change', updateProfTotals);
+    });
+</script>
 </body>
 </html>
